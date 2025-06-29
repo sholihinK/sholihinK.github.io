@@ -1,0 +1,29 @@
+# Site settings
+title: Sholihin Kamarudin
+tagline: Cybersecurity Notes & Insights
+description: A public repository for cybersecurity notes, research, and insights by Sholihin Kamarudin.
+
+# Base URL for GitHub Pages
+# For user pages (username.github.io), baseurl should be empty.
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+theme: minima # We'll override this with our own styling, but minima is a good default.
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag # Good for SEO
+
+# Exclude files from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+
+# Custom variables (optional, but useful later)
+linkedin_username: sholihin-kamarudin
+github_username: sholihinK
