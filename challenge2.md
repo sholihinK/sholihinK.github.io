@@ -5,18 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agency 7 — Cipher Ops</title>
     <style>
-        /* CSS Variables */
+        /* Cyberpunk CSS Variables */
         :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #1a1a1a;
-            --bg-card: #141414;
-            --text-primary: #e0e0e0;
-            --text-secondary: #b0b0b0;
-            --accent-green: #00ff41;
-            --accent-green-dim: rgba(0, 255, 65, 0.3);
-            --border-color: #333;
-            --danger-red: #ff4444;
-            --warning-orange: #ff8800;
+            --bg-primary: #0d0221;
+            --bg-secondary: #1a0933;
+            --bg-card: #2d1b4e;
+            --text-primary: #e0d4f7;
+            --text-secondary: #b794f6;
+            --accent-primary: #ff00ff;
+            --accent-secondary: #00ffff;
+            --accent-glow: rgba(255, 0, 255, 0.4);
+            --accent-cyan-glow: rgba(0, 255, 255, 0.3);
+            --border-color: #6b46c1;
+            --danger-red: #ff3366;
+            --warning-orange: #ff6b35;
+            --success-green: #00ff88;
             --font-mono: 'Courier New', 'Monaco', monospace;
             --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
@@ -35,13 +38,20 @@
             line-height: 1.6;
             min-height: 100vh;
             background-image: 
-                radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0);
-            background-size: 20px 20px;
+                radial-gradient(circle at 1px 1px, rgba(255,0,255,0.15) 1px, transparent 0),
+                linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            background-size: 25px 25px, 100% 100%;
+        }
+
+        /* Glowing border animation */
+        @keyframes glow-border {
+            0%, 100% { box-shadow: 0 0 20px var(--accent-glow); }
+            50% { box-shadow: 0 0 35px var(--accent-cyan-glow), 0 0 20px var(--accent-glow); }
         }
 
         /* Safety Banners */
         .safety-banner {
-            background: var(--danger-red);
+            background: linear-gradient(45deg, var(--danger-red), #ff1744);
             color: white;
             text-align: center;
             padding: 12px 20px;
@@ -50,7 +60,8 @@
             font-size: 14px;
             position: sticky;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(255, 68, 68, 0.3);
+            box-shadow: 0 2px 15px rgba(255, 51, 102, 0.4);
+            animation: glow-border 3s ease-in-out infinite;
         }
 
         .safety-banner--top {
@@ -64,6 +75,7 @@
         .safety-icon {
             margin: 0 10px;
             font-size: 16px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
         }
 
         /* Training Ribbon */
@@ -71,7 +83,7 @@
             position: fixed;
             top: 60px;
             right: -40px;
-            background: var(--warning-orange);
+            background: linear-gradient(45deg, var(--warning-orange), #ff8f00);
             color: black;
             padding: 8px 50px;
             font-family: var(--font-mono);
@@ -79,7 +91,7 @@
             font-weight: bold;
             transform: rotate(45deg);
             z-index: 999;
-            box-shadow: 0 2px 10px rgba(255, 136, 0, 0.3);
+            box-shadow: 0 2px 15px rgba(255, 107, 53, 0.4);
         }
 
         /* Layout */
@@ -94,15 +106,31 @@
             text-align: center;
             margin-bottom: 40px;
             padding: 30px 0;
-            border-bottom: 2px solid var(--accent-green);
+            border-bottom: 2px solid var(--accent-primary);
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-secondary), transparent);
+            animation: glow-border 2s ease-in-out infinite;
         }
 
         .header__title {
             font-family: var(--font-mono);
             font-size: 2.5rem;
-            color: var(--accent-green);
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 10px;
-            text-shadow: 0 0 10px var(--accent-green-dim);
+            text-shadow: 0 0 20px var(--accent-glow);
         }
 
         .header__subtitle {
@@ -114,32 +142,58 @@
 
         /* Cards */
         .card {
-            background: var(--bg-card);
+            background: linear-gradient(145deg, var(--bg-card), var(--bg-secondary));
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 25px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(107, 70, 193, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), var(--accent-primary));
+            opacity: 0.7;
         }
 
         .card__title {
             font-family: var(--font-mono);
-            color: var(--accent-green);
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 15px;
             font-size: 1.4rem;
+            text-shadow: 0 0 10px var(--accent-glow);
         }
 
         /* Terminal Boxes */
         .terminal-box {
             background: var(--bg-primary);
-            border: 1px solid var(--accent-green);
-            border-radius: 4px;
+            border: 1px solid var(--accent-primary);
+            border-radius: 8px;
             padding: 15px;
             font-family: var(--font-mono);
-            color: var(--accent-green);
+            color: var(--accent-secondary);
             margin: 10px 0;
             word-break: break-all;
-            box-shadow: inset 0 0 10px var(--accent-green-dim);
+            box-shadow: 
+                inset 0 0 15px rgba(255, 0, 255, 0.1),
+                0 0 20px rgba(0, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .terminal-box::before {
+            content: '> ';
+            color: var(--accent-primary);
+            font-weight: bold;
         }
 
         .ciphertext-label {
@@ -152,32 +206,55 @@
 
         /* Buttons */
         .btn {
-            background: var(--accent-green);
-            color: black;
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
             border: none;
             padding: 12px 24px;
             font-family: var(--font-mono);
             font-weight: bold;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
             margin: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn:hover {
-            background: var(--text-primary);
-            box-shadow: 0 0 15px var(--accent-green-dim);
+            box-shadow: 0 0 25px var(--accent-glow);
+            transform: translateY(-2px);
         }
 
         .btn--secondary {
             background: transparent;
-            color: var(--accent-green);
-            border: 1px solid var(--accent-green);
+            color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
         }
 
         .btn--secondary:hover {
-            background: var(--accent-green);
-            color: black;
+            background: var(--accent-primary);
+            color: white;
+            box-shadow: 0 0 25px var(--accent-glow);
         }
 
         /* Tabs */
@@ -185,6 +262,8 @@
             display: flex;
             border-bottom: 1px solid var(--border-color);
             margin-bottom: 20px;
+            background: rgba(107, 70, 193, 0.1);
+            border-radius: 8px 8px 0 0;
         }
 
         .tab {
@@ -194,21 +273,29 @@
             color: var(--text-secondary);
             font-family: var(--font-mono);
             cursor: pointer;
-            border-bottom: 2px solid transparent;
+            border-bottom: 3px solid transparent;
             transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .tab.active {
-            color: var(--accent-green);
-            border-bottom-color: var(--accent-green);
+            color: var(--accent-primary);
+            border-bottom-color: var(--accent-primary);
+            background: rgba(255, 0, 255, 0.1);
+            box-shadow: 0 0 15px var(--accent-glow);
         }
 
         .tab:hover {
-            color: var(--text-primary);
+            color: var(--accent-secondary);
+            background: rgba(0, 255, 255, 0.1);
         }
 
         .tab-panel {
             display: none;
+            background: rgba(45, 27, 78, 0.3);
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
         }
 
         .tab-panel.active {
@@ -225,24 +312,28 @@
             margin-bottom: 8px;
             font-family: var(--font-mono);
             color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .input-text {
             width: 100%;
             background: var(--bg-primary);
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--border-color);
             color: var(--text-primary);
             padding: 12px;
             font-family: var(--font-mono);
-            border-radius: 4px;
+            border-radius: 6px;
             resize: vertical;
             min-height: 100px;
+            transition: all 0.3s ease;
         }
 
         .input-text:focus {
             outline: none;
-            border-color: var(--accent-green);
-            box-shadow: 0 0 10px var(--accent-green-dim);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px var(--accent-glow);
+            background: rgba(255, 0, 255, 0.05);
         }
 
         /* Slider */
@@ -253,21 +344,63 @@
         .slider {
             width: 100%;
             margin: 10px 0;
+            -webkit-appearance: none;
+            background: var(--bg-primary);
+            border-radius: 5px;
+            height: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
         .slider-value {
             font-family: var(--font-mono);
-            color: var(--accent-green);
+            color: var(--accent-primary);
             font-weight: bold;
+            font-size: 1.2rem;
         }
 
         /* Hard Mode */
         .hard-mode {
             margin-top: 20px;
             padding: 20px;
-            border: 1px solid var(--warning-orange);
+            border: 2px solid var(--warning-orange);
             border-radius: 8px;
-            background: rgba(255, 136, 0, 0.1);
+            background: linear-gradient(145deg, rgba(255, 107, 53, 0.1), rgba(255, 107, 53, 0.05));
+            position: relative;
+        }
+
+        .hard-mode::before {
+            content: 'CLASSIFIED';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--warning-orange);
+            color: black;
+            padding: 4px 12px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 4px;
         }
 
         .hard-mode-label {
@@ -275,45 +408,84 @@
             color: var(--warning-orange);
             font-weight: bold;
             margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .hint-text {
             font-size: 0.9rem;
             color: var(--text-secondary);
             font-style: italic;
+            background: rgba(183, 148, 246, 0.1);
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid var(--accent-secondary);
         }
 
         /* Success Animation */
         .success-animation {
             text-align: center;
             padding: 30px;
-            background: rgba(0, 255, 65, 0.1);
-            border: 2px solid var(--accent-green);
-            border-radius: 8px;
+            background: linear-gradient(145deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 255, 0.1));
+            border: 2px solid var(--success-green);
+            border-radius: 12px;
             margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .success-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: sweep 2s ease-in-out infinite;
+        }
+
+        @keyframes sweep {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
         .stamp {
             font-family: var(--font-mono);
             font-size: 2rem;
-            color: var(--accent-green);
-            text-shadow: 0 0 20px var(--accent-green);
-            animation: pulse 2s infinite;
+            background: linear-gradient(45deg, var(--success-green), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse-glow 2s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 10px var(--success-green));
+                transform: scale(1);
+            }
+            50% { 
+                filter: drop-shadow(0 0 25px var(--success-green));
+                transform: scale(1.05);
+            }
         }
 
         .badge {
             font-family: var(--font-mono);
-            background: var(--accent-green);
-            color: black;
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
             padding: 10px 20px;
-            border-radius: 20px;
+            border-radius: 25px;
             margin-top: 15px;
             display: inline-block;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px var(--accent-glow);
+            position: relative;
+            z-index: 1;
         }
 
         /* Confetti */
@@ -329,10 +501,18 @@
 
         .confetti-piece {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--accent-green);
+            width: 8px;
+            height: 8px;
             animation: confetti-fall 3s linear infinite;
+        }
+
+        .confetti-piece:nth-child(odd) {
+            background: var(--accent-primary);
+            border-radius: 50%;
+        }
+
+        .confetti-piece:nth-child(even) {
+            background: var(--accent-secondary);
         }
 
         @keyframes confetti-fall {
@@ -344,6 +524,22 @@
                 transform: translateY(100vh) rotate(720deg);
                 opacity: 0;
             }
+        }
+
+        /* Cyber grid effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,0,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,0,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
         }
 
         /* Utility Classes */
@@ -382,8 +578,8 @@
         /* Print Styles */
         @media print {
             body {
-                background: white;
-                color: black;
+                background: white !important;
+                color: black !important;
             }
             
             .safety-banner,
@@ -399,6 +595,12 @@
             .terminal-box {
                 border: 1px solid black;
                 background: #f5f5f5;
+                color: black;
+            }
+            
+            .btn {
+                background: #333 !important;
+                color: white !important;
             }
         }
     </style>
@@ -418,7 +620,7 @@
         <!-- Header -->
         <header class="header">
             <h1 class="header__title">Agency 7 — Cipher Ops</h1>
-            <p class="header__subtitle">Intercept Analysis Console</p>
+            <p class="header__subtitle">Cyberpunk Intercept Analysis Console</p>
         </header>
 
         <!-- Mission Brief Section -->
@@ -441,16 +643,16 @@
 
                 <div class="hard-mode hidden" id="hardModeSection">
                     <div class="hard-mode-label">Hard Mode Challenge (Multi-Layer)</div>
-                    <p class="hint-text">SIGINT suggests multiple encryption layers. Start with Base64, then try combinations.</p>
-                    <div class="terminal-box">Q3RNMkczR2JHM1FLR0RRdUZ1SXBsQVBm</div>
+                    <p class="hint-text">SIGINT suggests multiple encryption layers. This intercept has a different solution than the primary mission!</p>
+                    <div class="terminal-box">RlVFY254cTNuek1qbmFwalpRcD0=</div>
                     <button class="btn btn--secondary" id="showHint">Show Decoding Hint</button>
                     <div class="hint-text hidden" id="hintText">
                         <strong>Decoding Process:</strong><br>
                         1. Base64 decode<br>
-                        2. Caesar shift -7<br>
+                        2. ROT13 reverse (Caesar -13)<br>
                         3. Base64 decode again<br>
-                        4. Caesar shift -13<br>
-                        Result should be the same as the primary mission.
+                        4. Caesar shift -5<br>
+                        Result will be different from primary mission!
                     </div>
                 </div>
             </div>
@@ -526,7 +728,7 @@
         <section class="success-gate">
             <div class="card">
                 <h2 class="card__title">Report to HQ — Success Phrase</h2>
-                <p>Enter the decoded directive exactly to complete the mission.</p>
+                <p>Enter the decoded directive exactly to complete the mission. Each difficulty level has a different answer!</p>
                 
                 <div class="input-group">
                     <label for="successInput">Success Phrase:</label>
@@ -537,8 +739,8 @@
                 
                 <div class="hidden" id="successAnimation">
                     <div class="success-animation">
-                        <div class="stamp">CONFIDENTIAL — VERIFIED</div>
-                        <div class="badge">Status: Cleared — Cipher Apprentice</div>
+                        <div class="stamp">CLASSIFIED — DECODED</div>
+                        <div class="badge">Status: Elite — Cyber Agent</div>
                     </div>
                 </div>
             </div>
@@ -553,6 +755,7 @@
                     <li>Base64 is encoding for representation, not secrecy.</li>
                     <li>Keys matter: without the key, decoding is difficult.</li>
                     <li>Modern cryptography uses strong math and keys; simple ciphers teach the basics.</li>
+                    <li>Multi-layer encryption increases security exponentially.</li>
                 </ul>
                 <p class="hint-text margin-top">
                     <strong>Safety Note:</strong> In real life, do not copy or run commands found on web pages. 
@@ -641,7 +844,7 @@
                 confetti.className = 'confetti';
                 document.body.appendChild(confetti);
 
-                for (let i = 0; i < 50; i++) {
+                for (let i = 0; i < 75; i++) {
                     const piece = document.createElement('div');
                     piece.className = 'confetti-piece';
                     piece.style.left = Math.random() * 100 + '%';
@@ -652,7 +855,7 @@
 
                 setTimeout(() => {
                     document.body.removeChild(confetti);
-                }, 5000);
+                }, 6000);
             }
         }
 
@@ -710,13 +913,26 @@
 
         function checkSuccess() {
             const input = document.getElementById('successInput').value.trim();
-            const successPhrase = 'InitiateProtocol22';
+            const primaryPhrase = 'InitiateProtocol22';
+            const hardModePhrase = 'CodeBreaker007';
             
-            if (input === successPhrase) {
+            if (input === primaryPhrase || input === hardModePhrase) {
                 document.getElementById('successAnimation').classList.remove('hidden');
                 app.showConfetti();
+                
+                // Show different messages based on which phrase was entered
+                const stamp = document.querySelector('.stamp');
+                const badge = document.querySelector('.badge');
+                
+                if (input === hardModePhrase) {
+                    stamp.textContent = 'CLASSIFIED — ELITE DECODED';
+                    badge.textContent = 'Status: Master — Cipher Elite';
+                } else {
+                    stamp.textContent = 'CONFIDENTIAL — VERIFIED';
+                    badge.textContent = 'Status: Cleared — Cipher Apprentice';
+                }
             } else {
-                alert('Incorrect phrase. Keep trying, agent!');
+                alert('Incorrect phrase. Keep trying, agent! Remember: each difficulty has a different answer.');
             }
         }
     </script>
