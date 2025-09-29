@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -194,7 +193,6 @@
         <div class="content">
             <div class="challenge-box">
                 <h2>🔍 Your Mission</h2>
-                <p><strong>Welcome, young cyber detective!</strong></p>
                 <p>Someone has hidden a secret password on this webpage, but they made a big mistake! 
                 Can you find where they hid it?</p>
                 
@@ -219,16 +217,6 @@
                 <p>Look for comments that start with <code>&lt;!--</code> or search for the word "password"</p>
             </div>
             
-            <div class="security-tips">
-                <h3>🛡️ What You've Learned</h3>
-                <p><strong>Security by obscurity doesn't work!</strong> Hiding passwords in code is like hiding a key under a doormat - anyone who knows where to look can find it.</p>
-                <ul>
-                    <li><strong>Source code is public:</strong> Anyone can view the HTML, CSS, and JavaScript of any website</li>
-                    <li><strong>Passwords should be encrypted:</strong> Real passwords should never be stored in plain text</li>
-                    <li><strong>Server-side security:</strong> Important checks should happen on secure servers, not in the browser</li>
-                    <li><strong>Always assume hackers will find hidden things:</strong> If it's in the code, it's not really hidden!</li>
-                </ul>
-            </div>
             
             <div class="examples-box">
                 <h3>🌍 Real-World Examples</h3>
