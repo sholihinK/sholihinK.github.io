@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -608,13 +607,11 @@
 <body>
     <!-- Safety Banner Top -->
     <div class="safety-banner safety-banner--top">
-        <span class="safety-icon">⚠️</span>
-        Training Simulation: Never paste commands from websites in real life.
-        <span class="safety-icon">⚠️</span>
+        <span class="safety-icon">⚠️</span>Challenge 2<span class="safety-icon">⚠️</span>
     </div>
 
     <!-- Training Use Ribbon -->
-    <div class="training-ribbon">FOR TRAINING USE ONLY</div>
+    <div class="training-ribbon">FOR YOUR EYES ONLY</div>
 
     <div class="container">
         <!-- Header -->
