@@ -617,7 +617,7 @@
         <!-- Header -->
         <header class="header">
             <h1 class="header__title">Agency 7 — Cipher Ops</h1>
-            <p class="header__subtitle">Cyberpunk Intercept Analysis Console</p>
+            <p class="header__subtitle">Intercept Analysis Console</p>
         </header>
 
         <!-- Mission Brief Section -->
@@ -646,9 +646,9 @@
                     <div class="hint-text hidden" id="hintText">
                         <strong>Decoding Process:</strong><br>
                         1. Base64 decode<br>
-                        2. ROT13 reverse (Caesar -13)<br>
+                        2. ROT13 reverse (Caesar -1?)<br>
                         3. Base64 decode again<br>
-                        4. Caesar shift -5<br>
+                        4. Caesar shift -?<br>
                         Result will be different from primary mission!
                     </div>
                 </div>
