@@ -646,9 +646,9 @@
                     <div class="hint-text hidden" id="hintText">
                         <strong>Decoding Process:</strong><br>
                         1. Base64 decode<br>
-                        2. ROT13 reverse (Caesar -1?)<br>
+                        2. ROT13 reverse <br>
                         3. Base64 decode again<br>
-                        4. Caesar shift -?<br>
+                        4. Caesar shift - ? <br>
                         Result will be different from primary mission!
                     </div>
                 </div>
@@ -910,7 +910,7 @@
 
         function checkSuccess() {
             const input = document.getElementById('successInput').value.trim();
-            const primaryPhrase = 'InitiateProtocol22';
+            const primaryPhrase = 'INITIATEPROTOCOL22';
             const hardModePhrase = 'CodeBreaker007';
             
             if (input === primaryPhrase || input === hardModePhrase) {
