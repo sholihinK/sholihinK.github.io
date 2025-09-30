@@ -163,7 +163,7 @@ pre {
         font-size: 0.85em;
     }
     .site-nav a {
-        display: block; /* Stack links on very small screens */
+        display: block; /* Stack links on very small creens */
         margin: 5px 0;
     }
 }
