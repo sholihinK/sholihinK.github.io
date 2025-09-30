@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hackerman CTF Console - Educational Security Training</title>
+    <title> CTF Console - Educational Security Training</title>
     <style>
         /* Reset and base styles */
         * {
@@ -426,15 +426,15 @@
 <body>
     <!-- Safety Ribbon -->
     <div class="safety-ribbon">
-        🎯 Educational CTF Simulation — Learn ethical hacking with GTFOBins exploitation 🎯
+        🎯 Educational CTF Simulation — Learn ethical hacking with sudo misconfiguration exploitation 🎯
     </div>
 
     <!-- Main Container -->
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <h1 class="title">Hackerman Ops Console — CTF Training Simulation</h1>
-            <p class="subtitle">Mission: Escalate privileges using GTFOBins, crack mary's account, and capture the flag</p>
+            <h1 class="title">Ops Console — CTF Training Simulation</h1>
+            <p class="subtitle">Mission: Escalate privileges using sudo misconfigurations, crack mary's account, and capture the flag</p>
             <div class="status-bar">
                 <span class="current-user-display">Current User: <span id="current-user-indicator">student</span></span>
                 <span class="ctf-mode">🚩 CTF MODE ACTIVE 🚩</span>
@@ -461,7 +461,7 @@
                 </div>
                 <div id="objective-2" class="objective">
                     <span class="objective-icon">⭕</span>
-                    <span class="objective-text">⚡ Exploit GTFOBins find command to gain root access</span>
+                    <span class="objective-text">⚡ Exploit sudo misconfiguration to gain root access</span>
                 </div>
                 <div id="objective-3" class="objective">
                     <span class="objective-icon">⭕</span>
@@ -480,7 +480,7 @@
                             🚩 Welcome to the CTF Training Simulation! 🚩<br>
                             Current User: student | Objective: Capture the Flag<br>
                             <br>
-                            🎯 Your mission: Use GTFOBins techniques to escalate privileges and capture the flag<br>
+                            🎯 Your mission: Exploit sudo misconfigurations to escalate privileges and capture the flag<br>
                             🔍 Start by running 'cve-scanner' to identify misconfigurations<br>
                             <br>
                             Type 'help' for available commands.<br>
@@ -500,17 +500,23 @@
         <div class="guide-panel">
             <h3>🛡️ Educational Guide</h3>
             <div class="guide-content">
-                <strong>GTFOBins & Privilege Escalation:</strong>
-                • GTFOBins.github.io catalogs Unix binaries for privilege escalation
-                • Sudo misconfigurations are common attack vectors
-                • The 'find' command can execute arbitrary commands when run with sudo
-                • Real attackers use these techniques for privilege escalation
+                <strong>Sudo Misconfigurations & Privilege Escalation:</strong>
+                • Sudo allows specific commands to run with elevated privileges
+                • Misconfigurations occur when dangerous commands are permitted
+                • The 'find' command can execute arbitrary commands when misconfigured
+                • Attackers exploit these misconfigurations for privilege escalation
 
                 <strong>Vulnerability Assessment:</strong>
                 • CVE scanning identifies system misconfigurations
-                • Sudo -l shows what commands can be run as root
-                • GTFOBins provides exploitation techniques for legitimate binaries
+                • 'sudo -l' command shows what can be run with elevated privileges
+                • Many Linux systems have dangerous sudo configurations
                 • Defense: Follow principle of least privilege
+
+                <strong>Command Injection via Find:</strong>
+                • The find command's -exec parameter runs other commands
+                • When find runs as root via sudo, executed commands inherit root privileges
+                • This is a common misconfiguration in production systems
+                • Proper configuration would restrict or avoid dangerous parameters
 
                 <strong>Password Security:</strong>
                 • Hash analysis identifies vulnerable algorithms
@@ -526,16 +532,16 @@
 
                 <strong>Ethical Guidelines:</strong>
                 • Only test systems you own or have explicit permission
-                • GTFOBins techniques should be used for authorized testing
+                • Sudo misconfiguration testing should be authorized
                 • Report vulnerabilities responsibly
                 • Use skills to improve security, not exploit it
                 • Follow all applicable laws and regulations
 
                 <strong>Real-World Applications:</strong>
-                • Penetration testing uses these techniques legally
+                • Penetration testing identifies sudo misconfigurations
                 • System administrators should audit sudo configurations
-                • Security teams use GTFOBins to identify risks
-                • Regular privilege reviews prevent escalation paths
+                • Security teams should review privilege escalation paths
+                • Regular privilege reviews prevent dangerous configurations
             </div>
         </div>
     </div>
@@ -556,7 +562,7 @@
 
         // Application Data
         const appData = {
-            flag: "HACKERMAN{gt70b1ns_pr1v_3sc_4nd_l4t3r4l_m0v3m3nt}",
+            flag: "HACKERMAN{sud0_m1sc0nf1g_pr1v_3sc_4nd_l4t3r4l_m0v3m3nt}",
             crackedPassword: "flowers2023",
             exploitCommand: "sudo find . -exec /bin/sh \\; -quit"
         };
@@ -580,10 +586,10 @@
   Security Assessment Tools:
     cve-scanner - Launch vulnerability scanner
     sudo -l - List sudo privileges
-    gtfobins-lookup [binary] - Check GTFOBins for exploitation methods
+    find-exploit-info - Show find command exploitation techniques
   
   Advanced Operations:
-    sudo find . -exec /bin/sh \\; -quit - GTFOBins privilege escalation
+    sudo find . -exec /bin/sh \\; -quit - Sudo misconfiguration privilege escalation
     hashcracker --target mary - Crack mary's password (requires root)
     su mary - Switch to mary user (requires password)
     submit-flag - Submit captured flag for completion`;
@@ -620,7 +626,7 @@
             },
             
             'cat /etc/passwd': () => {
-                return 'root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin\nsys:x:3:3:sys:/dev:/usr/sbin/nologin\nstudent:x:1000:1000:Student:/home/student:/bin/bash\nmary:x:1001:1001:Mary Johnson:/home/mary:/bin/bash\nguest:x:1002:1002:Guest User:/home/guest:/bin/bash';
+                return 'root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin/usr/sbin/nologin\nsys:x:3:3:sys:/dev:/usr/sbin/nologin\nstudent:x:1000:1000:Student:/home/student:/bin/bash\nmary:x:1001:1001:Mary Johnson:/home/mary:/bin/bash\nguest:x:1002:1002:Guest User:/home/guest:/bin/bash';
             },
             
             'cat /etc/shadow': () => {
@@ -636,7 +642,7 @@
                 }
                 appState.flagCaptured = true;
                 updateMissionProgress(2, true);
-                return '🚩🚩🚩 CONGRATULATIONS! FLAG CAPTURED! 🚩🚩🚩\n\nHACKERMAN{gt70b1ns_pr1v_3sc_4nd_l4t3r4l_m0v3m3nt}\n\n🎯 Mission Summary:\n✅ Sudo misconfiguration discovery\n✅ GTFOBins privilege escalation\n✅ Password hash cracking\n✅ Lateral movement to target account\n✅ FLAG CAPTURED!\n\n💡 You successfully demonstrated:\n• Real-world vulnerability assessment\n• GTFOBins exploitation techniques\n• Password security analysis\n• Lateral movement between accounts\n\n🎓 Skills learned:\n• GTFOBins.github.io usage\n• Sudo misconfiguration exploitation\n• Hash cracking methodology\n• Ethical hacking principles\n\n🏆 Use \'submit-flag\' to complete your mission!';
+                return '🚩🚩🚩 CONGRATULATIONS! FLAG CAPTURED! 🚩🚩🚩\n\nHACKERMAN{sud0_m1sc0nf1g_pr1v_3sc_4nd_l4t3r4l_m0v3m3nt}\n\n🎯 Mission Summary:\n✅ Sudo misconfiguration discovery\n✅ Privilege escalation via sudo misconfiguration\n✅ Password hash cracking\n✅ Lateral movement to target account\n✅ FLAG CAPTURED!\n\n💡 You successfully demonstrated:\n• Real-world vulnerability assessment\n• Sudo misconfiguration exploitation\n• Password security analysis\n• Lateral movement between accounts\n\n🎓 Skills learned:\n• Sudo configuration auditing\n• Command injection via find -exec\n• Hash cracking methodology\n• Ethical hacking principles\n\n🏆 Use \'submit-flag\' to complete your mission!';
             },
             
             history: () => {
@@ -649,28 +655,28 @@
                 return '';
             },
             
-            // CVE Scanner Commands - Updated for GTFOBins
+            // CVE Scanner Commands - Updated for sudo misconfigurations
             'cve-scanner': () => {
                 updateMissionProgress(0, true);
                 appState.cveDiscovered = true;
-                return '🔍 VULNERABILITY SCANNER v4.0 - GTFOBins Edition 🔍\n\nScanning for privilege escalation vectors...\n[████████████████████████████████████████] 100%\n\n🚨 CRITICAL MISCONFIGURATIONS DETECTED:\n\n📋 SUDO-2023-MISC: Sudo Binary Misconfiguration\n   Severity: HIGH (CVSS 7.8)\n   Description: User can run \'find\' command as root via sudo\n   GTFOBins Reference: https://gtfobins.github.io/gtfobins/find/\n   Exploitation: Command execution via find -exec parameter\n   \n📋 PASS-2022-WEAK: Weak Password Hashing\n   Severity: MEDIUM (CVSS 5.4)\n   Description: SHA-256 used for password storage (fast hashing)\n   Affected: User account \'mary\'\n   Risk: Dictionary attacks may succeed against weak passwords\n\n🎯 EXPLOITATION RECOMMENDATIONS:\n1. Check sudo permissions with \'sudo -l\'\n2. Use GTFOBins database for find command exploitation\n3. Escalate to root, then audit user password strength\n\n⚠️  Educational Note: This demonstrates real GTFOBins techniques!\n⚠️  Always obtain authorization before testing on real systems!';
+                return '🔍 VULNERABILITY SCANNER v4.0 - Sudo Configuration Auditor 🔍\n\nScanning for privilege escalation vectors...\n[████████████████████████████████████████] 100%\n\n🚨 CRITICAL MISCONFIGURATIONS DETECTED:\n\n📋 SUDO-2023-MISC: Dangerous Sudo Configuration\n   Severity: HIGH (CVSS 7.8)\n   Description: User can run \'find\' command as root via sudo\n   Risk: Command injection via -exec parameter\n   Exploitation: Arbitrary command execution with root privileges\n   \n📋 PASS-2022-WEAK: Weak Password Hashing\n   Severity: MEDIUM (CVSS 5.4)\n   Description: SHA-256 used for password storage (fast hashing)\n   Affected: User account \'mary\'\n   Risk: Dictionary attacks may succeed against weak passwords\n\n🎯 EXPLOITATION RECOMMENDATIONS:\n1. Check sudo permissions with \'sudo -l\'\n2. Research find command injection techniques\n3. Escalate to root, then audit user password strength\n\n⚠️  Educational Note: This demonstrates real sudo misconfigurations!\n⚠️  Always obtain authorization before testing on real systems!';
             },
             
             'sudo -l': () => {
-                return 'Matching Defaults entries for student on hacklab-ctf:\n    env_reset, mail_badpass, secure_path=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin\n\nUser student may run the following commands on hacklab-ctf:\n    (root) NOPASSWD: /usr/bin/find\n\n💡 GTFOBins Note: The find command can be exploited for privilege escalation!\n🔗 Reference: https://gtfobins.github.io/gtfobins/find/\n🎯 Try: sudo find . -exec /bin/sh \\; -quit';
+                return 'Matching Defaults entries for student on hacklab-ctf:\n    env_reset, mail_badpass, secure_path=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin\n\nUser student may run the following commands on hacklab-ctf:\n    (root) NOPASSWD: /usr/bin/find\n\n💡 Security Risk: The find command can execute arbitrary commands!\n🚨 Misconfiguration: Allowing find with sudo is dangerous\n🎯 Try: sudo find . -exec /bin/sh \\; -quit';
             },
             
-            'gtfobins-lookup find': () => {
-                return '🔍 GTFOBins Database Lookup: find\n\n📖 Source: https://gtfobins.github.io/gtfobins/find/\n\n⚡ SUDO EXPLOITATION:\nIf the binary is allowed to run as superuser by sudo, it does not drop\nthe elevated privileges and may be used to access the file system,\nescalate or maintain privileged access.\n\n🎯 EXPLOITATION COMMAND:\nsudo find . -exec /bin/sh \\; -quit\n\n💡 How it works:\n• find command searches for files (. = current directory)\n• -exec parameter executes a command for each result\n• /bin/sh spawns a shell with elevated privileges\n• -quit stops after first execution\n\n⚠️  Educational simulation - demonstrates real GTFOBins technique';
+            'find-exploit-info': () => {
+                return '🔍 Find Command Exploitation Information\n\n📖 Sudo Misconfiguration Analysis\n\n⚡ COMMAND INJECTION RISK:\nThe find command\'s -exec parameter can execute arbitrary commands.\nWhen find runs with sudo privileges, executed commands inherit root access.\n\n🎯 EXPLOITATION TECHNIQUE:\nsudo find . -exec /bin/sh \\; -quit\n\n💡 How it works:\n• find searches for files in current directory (.)\n• -exec parameter runs a command for each file found\n• /bin/sh spawns a shell with inherited sudo privileges\n• -quit stops after first execution to prevent multiple shells\n• Result: Root shell access via sudo misconfiguration\n\n⚠️  This is a common real-world misconfiguration\n⚠️  Educational simulation - demonstrates actual attack technique';
             },
             
-            // GTFOBins Privilege Escalation Command
+            // Sudo Misconfiguration Privilege Escalation Command
             'sudo find . -exec /bin/sh \\; -quit': () => {
                 if (appState.currentUser !== 'student') {
                     return 'This exploit requires sudo access from student account.';
                 }
                 
-                // Change user state to root using GTFOBins technique
+                // Change user state to root using sudo misconfiguration
                 appState.currentUser = 'root';
                 appState.rootAccess = true;
                 updateMissionProgress(1, true);
@@ -679,7 +685,7 @@
                 updatePrompt();
                 updateUserIndicator();
                 
-                return '🚨 GTFOBins PRIVILEGE ESCALATION SUCCESSFUL! 🚨\n\n⚡ Executing GTFOBins find exploitation...\n[████████████████████████████████████████] 100%\n\n✅ EXPLOITATION SUCCESSFUL!\n🔓 Privilege escalation complete via GTFOBins technique\n🎯 UID changed: 1000(student) → 0(root)\n\n⚠️  WARNING: You now have root access (simulated)\n⚠️  Educational simulation - demonstrates real GTFOBins attack\n\nRoot shell obtained via find command. Type \'whoami\' to confirm.\n\n💡 What happened:\n• sudo allowed student to run find as root\n• find -exec parameter executed /bin/sh\n• Shell inherited root privileges from sudo context\n• No privilege dropping occurred (GTFOBins vulnerability)\n\n🔗 Real GTFOBins reference: https://gtfobins.github.io/gtfobins/find/\n🎯 Next objective: Crack mary\'s password using root access';
+                return '🚨 SUDO MISCONFIGURATION EXPLOITATION SUCCESSFUL! 🚨\n\n⚡ Executing sudo misconfiguration exploit...\n[████████████████████████████████████████] 100%\n\n✅ EXPLOITATION SUCCESSFUL!\n🔓 Privilege escalation complete via sudo misconfiguration\n🎯 UID changed: 1000(student) → 0(root)\n\n⚠️  WARNING: You now have root access (simulated)\n⚠️  Educational simulation - demonstrates real sudo misconfiguration\n\nRoot shell obtained via find command injection. Type \'whoami\' to confirm.\n\n💡 What happened:\n• sudo allowed student to run find as root (misconfiguration)\n• find -exec parameter executed /bin/sh command\n• Shell inherited root privileges from sudo context\n• This bypassed normal privilege restrictions\n\n🔧 How to prevent:\n• Restrict sudo access to specific, safe commands only\n• Never allow commands with -exec or similar parameters\n• Use sudo rules that prevent command injection\n• Regular security audits of sudo configurations\n\n🎯 Next objective: Crack mary\'s password using root access';
             },
             
             // Root-only commands
@@ -719,7 +725,7 @@
                 const flagInput = prompt('Enter the captured flag:');
                 if (flagInput === appData.flag) {
                     appState.flagSubmitted = true;
-                    return '🎉🎉🎉 MISSION ACCOMPLISHED! 🎉🎉🎉\n\n✅ Sudo misconfiguration discovery: COMPLETE\n✅ GTFOBins privilege escalation: COMPLETE\n✅ Lateral movement to mary: COMPLETE\n✅ Flag capture: COMPLETE\n\n🏆 ACHIEVEMENT UNLOCKED: GTFOBins Expert 🏆\n🎓 Skills demonstrated:\n   • Real-world vulnerability assessment\n   • GTFOBins exploitation techniques\n   • Password security analysis\n   • Lateral movement methodology\n\n📜 You\'ve learned practical ethical hacking skills!\n🔗 Explore more at: https://gtfobins.github.io/';
+                    return '🎉🎉🎉 MISSION ACCOMPLISHED! 🎉🎉🎉\n\n✅ Sudo misconfiguration discovery: COMPLETE\n✅ Privilege escalation via sudo misconfiguration: COMPLETE\n✅ Lateral movement to mary: COMPLETE\n✅ Flag capture: COMPLETE\n\n🏆 ACHIEVEMENT UNLOCKED: Sudo Configuration Expert 🏆\n🎓 Skills demonstrated:\n   • Real-world vulnerability assessment\n   • Sudo misconfiguration exploitation\n   • Password security analysis\n   • Lateral movement methodology\n\n📜 You\'ve learned practical ethical hacking skills!\n🔧 Remember: Always secure sudo configurations properly!';
                 } else {
                     return 'Incorrect flag. Try again.';
                 }
@@ -798,9 +804,7 @@
                 const baseCommand = parts[0];
                 const args = parts.slice(1).join(' ');
                 
-                if (baseCommand === 'gtfobins-lookup') {
-                    output = commands['gtfobins-lookup find']();
-                } else if (commands[baseCommand]) {
+                if (commands[baseCommand]) {
                     output = typeof commands[baseCommand] === 'function' ? commands[baseCommand](args) : commands[baseCommand];
                 } else {
                     output = `Command not found: ${command}`;
@@ -917,7 +921,7 @@
                 updateMissionProgress();
                 
                 // Add welcome message
-                appendToTerminal('🚩 Mission Reset! Welcome back to the CTF Training Simulation!\n\n🎯 Your mission: Use GTFOBins techniques to escalate privileges and capture the flag\n🔍 Start by running \'cve-scanner\' to identify misconfigurations\n\nType \'help\' for available commands.\n', 'welcome-message');
+                appendToTerminal('🚩 Mission Reset! Welcome back to the CTF Training Simulation!\n\n🎯 Your mission: Exploit sudo misconfigurations to escalate privileges and capture the flag\n🔍 Start by running \'cve-scanner\' to identify misconfigurations\n\nType \'help\' for available commands.\n', 'welcome-message');
             }
         }
 
