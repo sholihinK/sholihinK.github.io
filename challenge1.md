@@ -1,290 +1,390 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔐 Secret Detective Challenge - Learn Cybersecurity!</title>
-    <style>
-        body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(45deg, #ff9a56, #ffad56);
-            padding: 30px;
-            text-align: center;
-            color: white;
-        }
-        
-        .header h1 {
-            margin: 0;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .detective-emoji {
-            font-size: 4em;
-            animation: bounce 2s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-20px); }
-            60% { transform: translateY(-10px); }
-        }
-        
-        .content {
-            padding: 40px;
-        }
-        
-        .challenge-box {
-            background: #f8f9ff;
-            border: 3px solid #667eea;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
-            text-align: center;
-        }
-        
-        .challenge-box h2 {
-            color: #667eea;
-            margin-top: 0;
-        }
-        
-        .password-input {
-            width: 80%;
-            padding: 15px;
-            font-size: 18px;
-            border: 3px solid #ddd;
-            border-radius: 10px;
-            margin: 15px 0;
-            text-align: center;
-        }
-        
-        .password-input:focus {
-            border-color: #667eea;
-            outline: none;
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
-        }
-        
-        .submit-btn {
-            background: linear-gradient(45deg, #56ab2f, #a8e6cf);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-        
-        .hint-box {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .hint-box h3 {
-            color: #856404;
-            margin-top: 0;
-        }
-        
-        .success-message {
-            background: #d4edda;
-            border: 2px solid #28a745;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            display: none;
-        }
-        
-        .success-message h3 {
-            color: #155724;
-            margin-top: 0;
-        }
-        
-        .warning-box {
-            background: #f8d7da;
-            border: 2px solid #dc3545;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .warning-box h3 {
-            color: #721c24;
-            margin-top: 0;
-        }
-        
-        .footer {
-            background: #343a40;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .security-tips {
-            background: #e3f2fd;
-            border: 2px solid #2196f3;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .security-tips h3 {
-            color: #0d47a1;
-            margin-top: 0;
-        }
-        
-        .examples-box {
-            background: #f3e5f5;
-            border: 2px solid #9c27b0;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .examples-box h3 {
-            color: #4a148c;
-            margin-top: 0;
-        }
-        
-        code {
-            background: #f4f4f4;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-        }
-        
-        ul {
-            text-align: left;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="detective-emoji">🕵️‍♀️</div>
-            <h1>Secret Detective Challenge</h1>
-            <p>Can you find the hidden password and learn about cybersecurity?</p>
-        </div>
-        
-        <div class="content">
-            <div class="challenge-box">
-                <h2>🔍 Your Mission</h2>
-                <p>Someone has hidden a secret password on this webpage, but they made a big mistake! 
-                Can you find where they hid it?</p>
-                
-                <input type="password" id="passwordInput" class="password-input" placeholder="Enter the secret password">
-                <br>
-                <button onclick="checkPassword()" class="submit-btn">🔓 Submit Password</button>
-            </div>
-            
-            <div class="success-message" id="successMessage">
-                <h3>🎉 Congratulations, Detective! 🎉</h3>
-                <p><strong>Great job! You found the password in the source code.</strong></p>
-                <p>This teaches us why developers should never hard-code passwords in websites. 
-                You just learned an important cybersecurity lesson!</p>
-                <p><em>Real hackers can look at the source code too, just like you did!</em></p>
-            </div>
-            
-            <div class="hint-box">
-                <h3>🔍 Need a Hint?</h3>
-                <p><strong>Detective Tip:</strong> Web pages are made of code that browsers can read. 
-                Sometimes developers accidentally leave secrets in places where anyone can find them!</p>
-                <p><em>Try right-clicking on this page and selecting "View Page Source" or pressing Ctrl+U (Cmd+U on Mac)</em></p>
-                <p>Look for comments that start with <code>&lt;!--</code> or search for the word "password"</p>
-            </div>
-            
-            
-            <div class="examples-box">
-                <h3>🌍 Real-World Examples</h3>
-                <p><strong>This actually happens in real life!</strong> Here are some examples:</p>
-                <ul>
-                    <li><strong>Mobile Apps:</strong> Many apps have been found with API keys hidden in their code, allowing hackers to access databases</li>
-                    <li><strong>Website Comments:</strong> Developers sometimes leave notes like <code>&lt;!-- password=admin123 --&gt;</code> in web pages</li>
-                    <li><strong>GitHub Leaks:</strong> Companies accidentally publish code with passwords and secrets, which hackers then find</li>
-                    <li><strong>Config Files:</strong> Sometimes websites make their configuration files public, exposing all their secrets</li>
-                </ul>
-                <p><em>These mistakes have led to data breaches affecting millions of people!</em></p>
-            </div>
-            
-            <div class="warning-box">
-                <h3>⚠️ Important Cybersecurity Lesson</h3>
-                <p><strong>Always remember: Hackers can look at the source code too!</strong></p>
-                <p>Never store real passwords, API keys, or other secrets directly in website code. 
-                This is one of the most common mistakes that leads to security breaches.</p>
-                <p><em>Good developers use secure methods to store and check passwords on protected servers.</em></p>
-            </div>
-        </div>
-        
-        <div class="footer">
-            <p>🎓 <strong>Congratulations on completing your first cybersecurity lesson!</strong> 🎓</p>
-            <p>Remember: <em>Always think like a hacker to protect like a defender!</em></p>
-        </div>
+---
+layout: default
+title: Challenge 01 — Source Recon
+---
+<style>
+:root {
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #1c2128;
+  --border: #30363d;
+  --accent: #39ff14;
+  --accent2: #00d4ff;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --red: #ff3333;
+  --yellow: #ffbe0b;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Space Mono', monospace;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.safety-ribbon {
+  background: #ff6b00;
+  color: #000;
+  text-align: center;
+  padding: 8px;
+  font-size: 0.75em;
+  font-weight: 700;
+  letter-spacing: 3px;
+  animation: ribbon-pulse 3s ease-in-out infinite;
+}
+@keyframes ribbon-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.challenge-wrap {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+
+.challenge-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.challenge-header .tag {
+  display: inline-block;
+  background: var(--bg3);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 0.7em;
+  letter-spacing: 3px;
+  padding: 4px 12px;
+  border-radius: 2px;
+  margin-bottom: 16px;
+}
+.challenge-header h1 {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 0 30px rgba(57,255,20,0.3);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.challenge-header p {
+  color: var(--muted);
+  font-size: 0.85em;
+}
+
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  font-size: 0.85em;
+  letter-spacing: 2px;
+  color: var(--accent);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.card p, .card li {
+  color: var(--text);
+  font-size: 0.85em;
+  line-height: 1.7;
+}
+
+.card ul {
+  padding-left: 20px;
+  margin-top: 8px;
+}
+
+.card li {
+  margin-bottom: 6px;
+}
+
+code {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.9em;
+}
+
+.input-area {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.pw-input {
+  flex: 1;
+  min-width: 200px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 12px 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.9em;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.pw-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(57,255,20,0.2);
+}
+.pw-input::placeholder { color: var(--muted); }
+
+.btn {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 12px 22px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.85em;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.btn:hover {
+  background: rgba(57,255,20,0.08);
+  box-shadow: 0 0 12px rgba(57,255,20,0.25);
+}
+
+.btn-muted {
+  border-color: var(--muted);
+  color: var(--muted);
+}
+.btn-muted:hover {
+  background: rgba(139,148,158,0.08);
+  box-shadow: none;
+  color: var(--text);
+}
+
+.attempt-counter {
+  font-size: 0.75em;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+.hint-section {
+  margin-top: 16px;
+}
+
+.hint-item {
+  background: var(--bg3);
+  border: 1px solid var(--yellow);
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-top: 10px;
+  font-size: 0.82em;
+  color: var(--yellow);
+  display: none;
+  animation: fade-in 0.3s ease;
+}
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.error-msg {
+  color: var(--red);
+  font-size: 0.8em;
+  margin-top: 10px;
+  display: none;
+}
+
+/* Flag reveal */
+.flag-card {
+  display: none;
+  background: var(--bg3);
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 30px rgba(57,255,20,0.15);
+  border-radius: 6px;
+  padding: 28px;
+  text-align: center;
+  animation: flag-appear 0.5s ease;
+}
+@keyframes flag-appear {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.flag-card h2 {
+  color: var(--accent);
+  font-size: 1em;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+.flag-value {
+  background: var(--bg);
+  border: 1px dashed var(--accent);
+  color: var(--accent);
+  padding: 14px 20px;
+  border-radius: 4px;
+  font-size: 0.95em;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  word-break: break-all;
+}
+.flag-card p {
+  color: var(--muted);
+  font-size: 0.8em;
+  line-height: 1.6;
+}
+
+.post-success {
+  display: none;
+  margin-top: 20px;
+}
+.post-success .card {
+  border-left-color: var(--red);
+}
+.post-success .card h2 {
+  color: var(--red);
+}
+
+.info-card {
+  border-left-color: var(--accent2);
+}
+.info-card h2 {
+  color: var(--accent2) !important;
+}
+</style>
+
+<div class="safety-ribbon">// TRAINING EXERCISE — EDUCATIONAL PURPOSES ONLY //</div>
+
+<div class="challenge-wrap">
+  <div class="challenge-header">
+    <div class="tag">CHALLENGE 01</div>
+    <h1>SOURCE RECON</h1>
+    <p>A developer made a critical mistake. Can you find it?</p>
+  </div>
+
+  <div class="card">
+    <h2>// Mission Brief</h2>
+    <p>An intern pushed credentials directly into the front-end codebase. Your job is to perform a source code recon and recover the hardcoded password.</p>
+    <p style="margin-top:10px;">Use your browser's built-in developer tools — the evidence is hiding in plain sight.</p>
+  </div>
+
+  <div class="card">
+    <h2>// Submit Credentials</h2>
+    <p>Enter the password you recovered from the source:</p>
+    <div class="input-area">
+      <input type="text" id="pwInput" class="pw-input" placeholder="recovered_password_here" autocomplete="off">
+      <button class="btn" onclick="checkPassword()">SUBMIT</button>
     </div>
-    
-    <!-- TODO: Remember to remove this password before going live! -->
-    <!-- SECRET PASSWORD: cyberdetective2024 -->
-    <!-- This is exactly what NOT to do in real websites! -->
-    
-    <script>
-        // WARNING: This is a terrible way to store passwords!
-        // In real applications, passwords should NEVER be stored in client-side code
-        const secretPassword = "cyberdetective2024"; // This is visible to anyone who views the source!
-        
-        function checkPassword() {
-            const userInput = document.getElementById('passwordInput').value;
-            const successDiv = document.getElementById('successMessage');
-            
-            if (userInput === secretPassword) {
-                successDiv.style.display = 'block';
-                successDiv.scrollIntoView({ behavior: 'smooth' });
-                
-                // Add some celebration effects
-                document.body.style.background = 'linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%)';
-                
-                // Show success animation
-                setTimeout(() => {
-                    alert("🎉 Amazing detective work! You've learned why hardcoded passwords are dangerous. Real hackers use the same techniques you just used!");
-                }, 500);
-            } else {
-                alert("🔍 Not quite right! Remember to check the source code. Look for HTML comments or JavaScript variables. You're on the right track!");
-            }
-        }
-        
-        // Add some fun interactivity
-        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPassword();
-            }
-        });
-        
-        // Educational console message
-        console.log("🕵️‍♀️ Hey there, detective! You're checking the browser console - that's exactly the kind of thinking that makes a good cybersecurity professional!");
-        console.log("🔍 The secret password is: " + secretPassword);
-        console.log("⚠️ This is why developers should NEVER put passwords in JavaScript - anyone can see them here!");
-    </script>
-</body>
-</html>
+    <div class="attempt-counter" id="attemptCounter">Attempts: 0 / —</div>
+    <div class="error-msg" id="errorMsg">Incorrect. Check the source code more carefully.</div>
+
+    <div class="hint-section">
+      <button class="btn btn-muted" id="hintBtn" onclick="showNextHint()" style="margin-top:14px;font-size:0.78em;">
+        REQUEST HINT [0/3]
+      </button>
+      <div class="hint-item" id="hint1">
+        HINT 1: Every webpage is made of code. Right-click anywhere and select "View Page Source" (or press <code>Ctrl+U</code>). Look for HTML comments — they start with <code>&lt;!--</code>.
+      </div>
+      <div class="hint-item" id="hint2">
+        HINT 2: Source code isn't just HTML. This page runs JavaScript. Open the browser DevTools (<code>F12</code>), go to the Sources or Debugger tab, and examine the script.
+      </div>
+      <div class="hint-item" id="hint3">
+        HINT 3: Open the Console tab in DevTools (<code>F12</code>). The developer left debug output there. Check what's been logged.
+      </div>
+    </div>
+  </div>
+
+  <div class="flag-card" id="flagCard">
+    <h2>// ACCESS GRANTED</h2>
+    <div class="flag-value">FLAG{s0urc3_c0d3_1s_n0t_a_s3cr3t}</div>
+    <p>You recovered the hardcoded credential. Mission complete.</p>
+  </div>
+
+  <div class="post-success" id="postSuccess">
+    <div class="card">
+      <h2>// Why This Is Critical</h2>
+      <p>You just demonstrated a <strong>CWE-798: Use of Hard-coded Credentials</strong> vulnerability. Here's why this matters in the real world:</p>
+      <ul style="margin-top:10px;">
+        <li>Browser source code is public — every user can read it</li>
+        <li>Git history preserves secrets even after deletion</li>
+        <li>Automated scanners (like <code>truffleHog</code>, <code>gitleaks</code>) find these in seconds</li>
+        <li>Real breaches have exposed millions of records this way</li>
+      </ul>
+      <p style="margin-top:10px;color:var(--muted);">Fix: Store secrets server-side. Use environment variables. Never ship credentials in client-side code.</p>
+    </div>
+  </div>
+
+  <div class="card info-card">
+    <h2>// Real-World Examples</h2>
+    <ul>
+      <li>Mobile apps shipped with AWS keys in compiled code (accessible via reverse engineering)</li>
+      <li>GitHub repos with <code>.env</code> files committed by accident — found by bots within minutes</li>
+      <li>WordPress themes with hardcoded DB credentials in PHP files served publicly</li>
+      <li>IoT firmware images with admin passwords compiled in — same across all devices</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TODO: Remove before prod — password is cyberdetective2024 -->
+
+<script>
+// WARNING: Hardcoded secrets in client-side code are visible to everyone.
+// This is intentional for this training challenge — do NOT do this in production.
+const secretPassword = "cyberdetective2024";
+
+let attempts = 0;
+let hintsShown = 0;
+
+function checkPassword() {
+  const input = document.getElementById('pwInput').value.trim();
+  const errorMsg = document.getElementById('errorMsg');
+  const counter = document.getElementById('attemptCounter');
+
+  if (!input) return;
+
+  attempts++;
+  counter.textContent = `Attempts: ${attempts}`;
+
+  if (input === secretPassword) {
+    errorMsg.style.display = 'none';
+    document.getElementById('flagCard').style.display = 'block';
+    document.getElementById('postSuccess').style.display = 'block';
+    document.getElementById('flagCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    errorMsg.style.display = 'block';
+    // Auto-show hint after 3 failed attempts
+    if (attempts === 3 && hintsShown === 0) {
+      showNextHint();
+    }
+  }
+}
+
+function showNextHint() {
+  if (hintsShown >= 3) return;
+  hintsShown++;
+  document.getElementById('hint' + hintsShown).style.display = 'block';
+  const btn = document.getElementById('hintBtn');
+  if (hintsShown < 3) {
+    btn.textContent = `REQUEST HINT [${hintsShown}/3]`;
+  } else {
+    btn.textContent = 'ALL HINTS REVEALED [3/3]';
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    btn.style.cursor = 'default';
+  }
+}
+
+document.getElementById('pwInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkPassword();
+});
+
+// Intentionally visible — part of the challenge
+console.log('%c[DEBUG] Auth module loaded', 'color: #39ff14; font-family: monospace');
+console.log('%c[DEBUG] secretPassword = "' + secretPassword + '"', 'color: #ff3333; font-family: monospace');
+console.log('%c[WARNING] Hardcoded credentials detected in source. This is CWE-798.', 'color: #ffbe0b; font-family: monospace');
+</script>

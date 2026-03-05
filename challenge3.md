@@ -1,936 +1,877 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> CTF Console - Educational Security Training</title>
-    <style>
-        /* Reset and base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+---
+layout: default
+title: Challenge 03 — CTF Console
+---
+<style>
+:root {
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #1c2128;
+  --border: #30363d;
+  --accent: #39ff14;
+  --accent2: #00d4ff;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --red: #ff3333;
+  --yellow: #ffbe0b;
+  --orange: #ff6b00;
+  --root-color: #ff4444;
+  --mary-color: #4488ff;
+}
 
-        body {
-            background: #000000;
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 1.4;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* Scanlines effect */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0, 255, 0, 0.03) 2px,
-                rgba(0, 255, 0, 0.03) 4px
-            );
-            pointer-events: none;
-            z-index: 1000;
-        }
+body {
+  font-family: 'Space Mono', 'Courier New', monospace;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+}
 
-        /* Safety ribbon */
-        .safety-ribbon {
-            background: rgba(255, 165, 0, 0.9);
-            color: #000;
-            text-align: center;
-            padding: 8px;
-            font-weight: bold;
-            font-size: 12px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 999;
-            animation: pulse 2s infinite;
-        }
+/* Subtle scanlines */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 2px,
+    rgba(57,255,20,0.015) 2px, rgba(57,255,20,0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
-        }
+.safety-ribbon {
+  background: var(--orange);
+  color: #000;
+  text-align: center;
+  padding: 8px;
+  font-size: 0.72em;
+  font-weight: 700;
+  letter-spacing: 3px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  animation: ribbon-pulse 3s ease-in-out infinite;
+}
+@keyframes ribbon-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
+}
 
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 20px 20px;
-            min-height: 100vh;
-        }
+.challenge-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
 
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            border: 2px solid #00ff00;
-            padding: 20px;
-            background: rgba(0, 255, 0, 0.05);
-        }
+/* Header */
+.challenge-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.challenge-header .tag {
+  display: inline-block;
+  background: var(--bg3);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 0.7em;
+  letter-spacing: 3px;
+  padding: 4px 12px;
+  border-radius: 2px;
+  margin-bottom: 12px;
+}
+.challenge-header h1 {
+  font-size: 1.6em;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 0 20px rgba(57,255,20,0.3);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+.challenge-header p { color: var(--muted); font-size: 0.82em; }
 
-        .title {
-            font-size: 24px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px #00ff00;
-        }
+/* Status bar */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 12px 18px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 0.8em;
+}
+.user-label { color: var(--muted); }
+#current-user-indicator {
+  color: var(--accent);
+  font-weight: 700;
+  border: 1px solid var(--accent);
+  padding: 2px 10px;
+  border-radius: 2px;
+  background: rgba(57,255,20,0.06);
+  transition: color 0.3s, border-color 0.3s, background 0.3s;
+}
+#current-user-indicator.root {
+  color: var(--root-color);
+  border-color: var(--root-color);
+  background: rgba(255,68,68,0.06);
+}
+#current-user-indicator.mary {
+  color: var(--mary-color);
+  border-color: var(--mary-color);
+  background: rgba(68,136,255,0.06);
+}
+.ctf-badge {
+  color: var(--accent2);
+  font-size: 0.85em;
+  letter-spacing: 2px;
+  animation: blink 2s step-end infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
 
-        .subtitle {
-            font-size: 16px;
-            margin-bottom: 15px;
-            color: #88ff88;
-        }
+/* Layout */
+.main-layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 768px) {
+  .main-layout { grid-template-columns: 1fr; }
+}
 
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #00ff00;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+/* Mission panel */
+.mission-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent2);
+  border-radius: 4px;
+  padding: 18px;
+}
+.mission-panel h3 {
+  font-size: 0.74em;
+  letter-spacing: 2px;
+  color: var(--accent2);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.objective {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  margin-bottom: 8px;
+  font-size: 0.8em;
+  color: var(--muted);
+  transition: color 0.2s, border-color 0.2s;
+}
+.objective.done {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.obj-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  margin-top: 4px;
+  flex-shrink: 0;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.objective.done .obj-dot {
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(57,255,20,0.5);
+}
 
-        .current-user-display {
-            color: #ffff00;
-            font-weight: bold;
-        }
+.guide-section {
+  margin-top: 16px;
+}
+.guide-section h4 {
+  font-size: 0.72em;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.guide-entry {
+  font-size: 0.76em;
+  color: var(--muted);
+  line-height: 1.7;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+.guide-entry strong { color: var(--text); }
+.guide-entry code {
+  color: var(--accent2);
+  background: var(--bg3);
+  padding: 0 4px;
+  border-radius: 2px;
+  font-size: 0.95em;
+}
 
-        #current-user-indicator {
-            color: #00ff00;
-            padding: 2px 8px;
-            border: 1px solid #00ff00;
-            background: rgba(0, 255, 0, 0.1);
-        }
+/* Control buttons */
+.controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.ctrl-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 6px 14px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.74em;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  text-transform: uppercase;
+}
+.ctrl-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(57,255,20,0.05);
+}
 
-        #current-user-indicator.root {
-            color: #ff4444 !important;
-            border-color: #ff4444 !important;
-            background: rgba(255, 68, 68, 0.1) !important;
-        }
+/* Terminal */
+.terminal-wrap {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 580px;
+}
+.terminal-titlebar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tbar-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+.tbar-dot.r { background: #ff5f56; }
+.tbar-dot.y { background: #ffbd2e; }
+.tbar-dot.g { background: var(--accent); }
+.tbar-title {
+  flex: 1;
+  text-align: center;
+  font-size: 0.72em;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
 
-        #current-user-indicator.mary {
-            color: #4488ff !important;
-            border-color: #4488ff !important;
-            background: rgba(68, 136, 255, 0.1) !important;
-        }
+#terminal-output {
+  flex: 1;
+  padding: 14px 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--accent);
+}
+#terminal-output::-webkit-scrollbar { width: 6px; }
+#terminal-output::-webkit-scrollbar-track { background: var(--bg2); }
+#terminal-output::-webkit-scrollbar-thumb { background: var(--border); }
+#terminal-output::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-        .ctf-mode {
-            color: #ff0066;
-            font-weight: bold;
-            animation: blink 1.5s infinite;
-        }
+.cmd-echo { color: var(--accent); }
+.cmd-out { color: #a8d8a8; }
+.cmd-err { color: var(--red); }
+.cmd-warn { color: var(--yellow); }
+.cmd-success { color: var(--accent); font-weight: 700; }
+.cmd-info { color: var(--accent2); }
+.cmd-root { color: var(--root-color); }
+.cmd-mary { color: var(--mary-color); }
+.cmd-prompt-out { color: var(--muted); font-style: italic; }
 
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0.3; }
-        }
+.terminal-input-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+}
+#term-prompt {
+  white-space: nowrap;
+  margin-right: 6px;
+  font-weight: 700;
+  color: var(--accent);
+  transition: color 0.2s;
+  font-size: 13px;
+}
+#term-prompt.root { color: var(--root-color); }
+#term-prompt.mary { color: var(--mary-color); }
+#term-prompt.pw { color: var(--yellow); }
 
-        /* Control Panel */
-        .control-panel {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
+#term-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: 'Space Mono', 'Courier New', monospace;
+  font-size: 13px;
+  outline: none;
+  caret-color: var(--accent);
+}
+.cursor {
+  display: inline-block;
+  width: 8px; height: 14px;
+  background: var(--accent);
+  animation: cursor-blink 1s step-end infinite;
+  vertical-align: middle;
+  margin-left: 1px;
+}
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+</style>
 
-        .control-btn {
-            background: rgba(0, 255, 0, 0.1);
-            border: 1px solid #00ff00;
-            color: #00ff00;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 12px;
-            transition: all 0.3s ease;
-        }
+<div class="safety-ribbon">// TRAINING EXERCISE — CHALLENGE 03 — EDUCATIONAL PURPOSES ONLY //</div>
 
-        .control-btn:hover {
-            background: rgba(0, 255, 0, 0.2);
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-        }
+<div class="challenge-wrap">
+  <div class="challenge-header">
+    <div class="tag">CHALLENGE 03</div>
+    <h1>CTF CONSOLE</h1>
+    <p>Privilege Escalation via sudo misconfiguration — capture the flag</p>
+  </div>
 
-        .control-btn:active {
-            background: rgba(0, 255, 0, 0.3);
-        }
+  <div class="status-bar">
+    <span class="user-label">ACTIVE USER: <span id="current-user-indicator">student</span></span>
+    <span class="ctf-badge">[ CTF MODE ACTIVE ]</span>
+  </div>
 
-        .control-btn.active {
-            background: rgba(0, 255, 0, 0.2);
-            box-shadow: inset 0 0 5px rgba(0, 255, 0, 0.5);
-        }
+  <div class="controls">
+    <button class="ctrl-btn" onclick="resetMission()">RESET MISSION</button>
+    <button class="ctrl-btn" onclick="printHelp()">HELP</button>
+  </div>
 
-        /* Mission Progress */
-        .mission-progress {
-            background: rgba(0, 255, 0, 0.05);
-            border: 1px solid #00ff00;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .mission-progress h3 {
-            color: #ffff00;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .objectives {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .objective {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 5px;
-            transition: all 0.3s ease;
-        }
-
-        .objective-icon {
-            font-size: 16px;
-            min-width: 20px;
-        }
-
-        .objective.completed .objective-icon {
-            color: #00ff00;
-        }
-
-        .objective.completed .objective-text {
-            color: #88ff88;
-            text-decoration: line-through;
-        }
-
-        .objective-text {
-            font-size: 14px;
-        }
-
-        /* Terminal Container */
-        .terminal-container {
-            border: 2px solid #00ff00;
-            background: rgba(0, 0, 0, 0.8);
-            position: relative;
-            height: 600px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Terminal */
-        .terminal {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-        }
-
-        .terminal-output {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            max-height: calc(600px - 50px);
-        }
-
-        .terminal-output::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .terminal-output::-webkit-scrollbar-track {
-            background: rgba(0, 255, 0, 0.1);
-        }
-
-        .terminal-output::-webkit-scrollbar-thumb {
-            background: #00ff00;
-        }
-
-        .welcome-message {
-            color: #ffff00;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(0, 255, 0, 0.3);
-        }
-
-        .command-line {
-            margin: 5px 0;
-        }
-
-        .command-input-display {
-            color: #88ff88;
-        }
-
-        .command-output {
-            color: #00ff00;
-            margin-left: 0;
-            white-space: pre-wrap;
-        }
-
-        .error-output {
-            color: #ff4444;
-        }
-
-        .success-output {
-            color: #44ff44;
-        }
-
-        .warning-output {
-            color: #ffaa00;
-        }
-
-        /* Terminal Input */
-        .terminal-input-line {
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
-            border-top: 1px solid rgba(0, 255, 0, 0.3);
-            background: rgba(0, 255, 0, 0.02);
-        }
-
-        .prompt {
-            color: #00ff00;
-            margin-right: 5px;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .prompt.root {
-            color: #ff4444;
-        }
-
-        .prompt.mary {
-            color: #4488ff;
-        }
-
-        #terminal-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #00ff00;
-            font-family: inherit;
-            font-size: inherit;
-            outline: none;
-            caret-color: #00ff00;
-        }
-
-        #terminal-input:focus {
-            background: rgba(0, 255, 0, 0.05);
-        }
-
-        /* Cursor animation */
-        .cursor {
-            display: inline-block;
-            background-color: #00ff00;
-            animation: cursor-blink 1s infinite;
-            width: 8px;
-            height: 14px;
-            margin-left: 2px;
-        }
-
-        @keyframes cursor-blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        /* Guide Panel */
-        .guide-panel {
-            position: fixed;
-            top: 60px;
-            right: -400px;
-            width: 380px;
-            height: calc(100vh - 80px);
-            background: rgba(0, 0, 0, 0.95);
-            border: 2px solid #00ff00;
-            border-right: none;
-            padding: 20px;
-            overflow-y: auto;
-            transition: right 0.3s ease;
-            z-index: 500;
-        }
-
-        .guide-panel.open {
-            right: 0;
-        }
-
-        .guide-panel h3 {
-            color: #ffff00;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .guide-content {
-            color: #88ff88;
-            line-height: 1.6;
-            white-space: pre-line;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 60px 10px 10px;
-            }
-            
-            .title {
-                font-size: 18px;
-            }
-            
-            .subtitle {
-                font-size: 14px;
-            }
-            
-            .status-bar {
-                justify-content: center;
-                text-align: center;
-            }
-            
-            .terminal-container {
-                height: 500px;
-            }
-            
-            .guide-panel {
-                right: -100%;
-                width: 100%;
-                top: 60px;
-            }
-        }
-
-        /* Hidden elements */
-        .hidden {
-            display: none !important;
-        }
-
-        /* Animation classes */
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-    </style>
-</head>
-<body>
-    <!-- Safety Ribbon -->
-    <div class="safety-ribbon">
-        🎯 Educational CTF Simulation — Learn ethical hacking with sudo misconfiguration exploitation 🎯
+  <div class="main-layout">
+    <!-- Terminal -->
+    <div>
+      <div class="terminal-wrap">
+        <div class="terminal-titlebar">
+          <div class="tbar-dot r"></div>
+          <div class="tbar-dot y"></div>
+          <div class="tbar-dot g"></div>
+          <div class="tbar-title">hacklab-ctf — terminal</div>
+        </div>
+        <div id="terminal-output"></div>
+        <div class="terminal-input-row">
+          <span id="term-prompt">student@hacklab-ctf:~$&nbsp;</span>
+          <input type="text" id="term-input" autocomplete="off" spellcheck="false">
+          <span class="cursor"></span>
+        </div>
+      </div>
     </div>
 
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <h1 class="title">Ops Console — CTF Training Simulation</h1>
-            <p class="subtitle">Mission: Escalate privileges using sudo misconfigurations, crack mary's account, and capture the flag</p>
-            <div class="status-bar">
-                <span class="current-user-display">Current User: <span id="current-user-indicator">student</span></span>
-                <span class="ctf-mode">🚩 CTF MODE ACTIVE 🚩</span>
-            </div>
-        </header>
-
-        <!-- Control Panel -->
-        <div class="control-panel">
-            <button id="guidePanelBtn" class="control-btn">
-                📖 Toggle Guide
-            </button>
-            <button id="resetMissionBtn" class="control-btn">
-                🔄 Reset Mission
-            </button>
+    <!-- Side panel -->
+    <div>
+      <div class="mission-panel">
+        <h3>// Mission Objectives</h3>
+        <div class="objective" id="obj1">
+          <div class="obj-dot"></div>
+          <span>Discover sudo misconfiguration</span>
+        </div>
+        <div class="objective" id="obj2">
+          <div class="obj-dot"></div>
+          <span>Escalate to root via exploit</span>
+        </div>
+        <div class="objective" id="obj3">
+          <div class="obj-dot"></div>
+          <span>Crack mary's password &amp; capture flag</span>
         </div>
 
-        <!-- Mission Progress -->
-        <div class="mission-progress">
-            <h3>Mission Objectives:</h3>
-            <div class="objectives">
-                <div id="objective-1" class="objective">
-                    <span class="objective-icon">⭕</span>
-                    <span class="objective-text">🔍 Discover sudo misconfiguration using vulnerability scanner</span>
-                </div>
-                <div id="objective-2" class="objective">
-                    <span class="objective-icon">⭕</span>
-                    <span class="objective-text">⚡ Exploit sudo misconfiguration to gain root access</span>
-                </div>
-                <div id="objective-3" class="objective">
-                    <span class="objective-icon">⭕</span>
-                    <span class="objective-text">🚩 Crack mary's password and capture the flag</span>
-                </div>
-            </div>
+        <div class="guide-section">
+          <h4>// Field Notes</h4>
+          <div class="guide-entry">
+            <strong>Start here:</strong> Run <code>cve-scanner</code> to identify misconfigurations, then <code>sudo -l</code> to see privileges.
+          </div>
+          <div class="guide-entry">
+            <strong>Priv esc:</strong> The <code>find</code> command with <code>-exec</code> can spawn a shell. If sudo allows it with <code>NOPASSWD</code>, you have root.
+          </div>
+          <div class="guide-entry">
+            <strong>Lateral move:</strong> As root, run <code>hashcracker --target mary</code> then <code>su mary</code>.
+          </div>
+          <div class="guide-entry">
+            <strong>Capture:</strong> As mary, <code>cat flag.txt</code>, then <code>submit-flag</code>.
+          </div>
+          <div class="guide-entry" style="color:var(--red);">
+            <strong>Ethics:</strong> Only test systems you own or have explicit written permission to test.
+          </div>
         </div>
-
-        <!-- Main Content Area -->
-        <div class="main-content">
-            <!-- Terminal -->
-            <div class="terminal-container">
-                <div class="terminal">
-                    <div id="terminal-output" class="terminal-output" role="log" aria-live="polite" aria-label="Terminal output">
-                        <div class="welcome-message">
-                            🚩 Welcome to the CTF Training Simulation! 🚩<br>
-                            Current User: student | Objective: Capture the Flag<br>
-                            <br>
-                            🎯 Your mission: Exploit sudo misconfigurations to escalate privileges and capture the flag<br>
-                            🔍 Start by running 'cve-scanner' to identify misconfigurations<br>
-                            <br>
-                            Type 'help' for available commands.<br>
-                            <br>
-                        </div>
-                    </div>
-                    <div class="terminal-input-line">
-                        <span id="terminal-prompt" class="prompt">student@hacklab-ctf:~$ </span>
-                        <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" aria-label="Terminal input">
-                        <span class="cursor"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Guide Panel -->
-        <div class="guide-panel">
-            <h3>🛡️ Educational Guide</h3>
-            <div class="guide-content">
-                <strong>Sudo Misconfigurations & Privilege Escalation:</strong>
-                • Sudo allows specific commands to run with elevated privileges
-                • Misconfigurations occur when dangerous commands are permitted
-                • The 'find' command can execute arbitrary commands when misconfigured
-                • Attackers exploit these misconfigurations for privilege escalation
-
-                <strong>Vulnerability Assessment:</strong>
-                • CVE scanning identifies system misconfigurations
-                • 'sudo -l' command shows what can be run with elevated privileges
-                • Many Linux systems have dangerous sudo configurations
-                • Defense: Follow principle of least privilege
-
-                <strong>Command Injection via Find:</strong>
-                • The find command's -exec parameter runs other commands
-                • When find runs as root via sudo, executed commands inherit root privileges
-                • This is a common misconfiguration in production systems
-                • Proper configuration would restrict or avoid dangerous parameters
-
-                <strong>Password Security:</strong>
-                • Hash analysis identifies vulnerable algorithms
-                • Dictionary attacks exploit weak passwords
-                • SHA-256 is fast (not designed for password storage)
-                • Modern systems use bcrypt/scrypt/Argon2
-
-                <strong>Lateral Movement:</strong>
-                • Moving between accounts after initial compromise
-                • Password cracking reveals weak authentication
-                • Multi-factor authentication adds security layers
-                • Account monitoring detects unauthorized access
-
-                <strong>Ethical Guidelines:</strong>
-                • Only test systems you own or have explicit permission
-                • Sudo misconfiguration testing should be authorized
-                • Report vulnerabilities responsibly
-                • Use skills to improve security, not exploit it
-                • Follow all applicable laws and regulations
-
-                <strong>Real-World Applications:</strong>
-                • Penetration testing identifies sudo misconfigurations
-                • System administrators should audit sudo configurations
-                • Security teams should review privilege escalation paths
-                • Regular privilege reviews prevent dangerous configurations
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
+</div>
 
-    <script>
-        // Application State Management
-        const appState = {
-            currentUser: 'student',
-            commandHistory: [],
-            historyIndex: -1,
-            missionProgress: [false, false, false],
-            cveDiscovered: false,
-            rootAccess: false,
-            passwordCracked: false,
-            flagCaptured: false,
-            guidePanelOpen: false
-        };
+<script>
+const FLAG = "HACKERMAN{sud0_m1sc0nf1g_pr1v_3sc_4nd_l4t3r4l_m0v3m3nt}";
+const MARY_PW = "flowers2023";
 
-        // Application Data
-        const appData = {
-            flag: "HACKERMAN{sud0_m1sc0nf1g_pr1v_3sc_4nd_l4t3r4l_m0v3m3nt}",
-            crackedPassword: "flowers2023",
-            exploitCommand: "sudo find . -exec /bin/sh \\; -quit"
-        };
+const state = {
+  user: 'student',
+  history: [],
+  histIdx: -1,
+  cveScanned: false,
+  isRoot: false,
+  pwCracked: false,
+  flagRead: false,
+  awaitingPw: false,
+  awaitingFlag: false,
+};
 
-        // Command Definitions
-        const commands = {
-            // Basic commands available to all users
-            help: () => {
-                return `Available commands:
-  Basic Commands:
-    help - Show this help message
-    whoami - Display current user
-    hostname - Display system hostname
-    uname -a - Display system information
-    id - Display user and group IDs
-    ls [dir] - List directory contents
-    cat [file] - Display file contents
-    clear - Clear terminal screen
-    history - Show command history
-  
-  Security Assessment Tools:
-    cve-scanner - Launch vulnerability scanner
-    sudo -l - List sudo privileges
-    find-exploit-info - Show find command exploitation techniques
-  
-  Advanced Operations:
-    sudo find . -exec /bin/sh \\; -quit - Sudo misconfiguration privilege escalation
-    hashcracker --target mary - Crack mary's password (requires root)
-    su mary - Switch to mary user (requires password)
-    submit-flag - Submit captured flag for completion`;
-            },
+const out = document.getElementById('terminal-output');
+const inp = document.getElementById('term-input');
+const promptEl = document.getElementById('term-prompt');
+const ui = document.getElementById('current-user-indicator');
 
-            whoami: () => appState.currentUser,
-            
-            hostname: () => 'hacklab-ctf',
-            
-            'uname -a': () => 'Linux hacklab-ctf 5.15.0-generic #1 SMP Mon Jan 1 12:00:00 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux',
-            
-            id: () => {
-                switch(appState.currentUser) {
-                    case 'root':
-                        return 'uid=0(root) gid=0(root) groups=0(root)';
-                    case 'mary':
-                        return 'uid=1001(mary) gid=1001(mary) groups=1001(mary),100(users)';
-                    default:
-                        return 'uid=1000(student) gid=1000(student) groups=1000(student),27(sudo)';
-                }
-            },
-            
-            ls: (args) => {
-                const path = args ? args.trim() : '';
-                if (path === '/home') {
-                    return 'student\nmary\nguest';
-                } else if (path === '/etc') {
-                    return 'group\nhosts\nos-release\npasswd\nshadow\nsudo\nsudoers';
-                } else if (appState.currentUser === 'mary' && !path) {
-                    return 'flag.txt\npersonal_data.txt\nimportant_docs\n.bash_history\nDocuments\nDownloads';
-                } else {
-                    return 'Documents\nDownloads\nDesktop\nctf-tools';
-                }
-            },
-            
-            'cat /etc/passwd': () => {
-                return 'root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin/usr/sbin/nologin\nsys:x:3:3:sys:/dev:/usr/sbin/nologin\nstudent:x:1000:1000:Student:/home/student:/bin/bash\nmary:x:1001:1001:Mary Johnson:/home/mary:/bin/bash\nguest:x:1002:1002:Guest User:/home/guest:/bin/bash';
-            },
-            
-            'cat /etc/shadow': () => {
-                if (appState.currentUser !== 'root') {
-                    return 'cat: /etc/shadow: Permission denied';
-                }
-                return 'root:$6$rootsalt$hashdatahere123educational456:19446:0:99999:7:::\nstudent:$y$studentsalt$hashdatahere789educational012:19446:0:99999:7:::\nmary:$5$marysalt123$8yHlRHpl5IDzMbNttD3zfmxoBHSQZ7ENFkBGnzVXyI3:19446:0:99999:7:::\nguest:$6$guestsalt$hashdatahere345educational678:19446:0:99999:7:::';
-            },
-            
-            'cat flag.txt': () => {
-                if (appState.currentUser !== 'mary') {
-                    return 'cat: flag.txt: No such file or directory';
-                }
-                appState.flagCaptured = true;
-                updateMissionProgress(2, true);
-                return '🚩🚩🚩 CONGRATULATIONS! FLAG CAPTURED! 🚩🚩🚩\n\nHACKERMAN{sud0_m1sc0nf1g_pr1v_3sc_4nd_l4t3r4l_m0v3m3nt}\n\n🎯 Mission Summary:\n✅ Sudo misconfiguration discovery\n✅ Privilege escalation via sudo misconfiguration\n✅ Password hash cracking\n✅ Lateral movement to target account\n✅ FLAG CAPTURED!\n\n💡 You successfully demonstrated:\n• Real-world vulnerability assessment\n• Sudo misconfiguration exploitation\n• Password security analysis\n• Lateral movement between accounts\n\n🎓 Skills learned:\n• Sudo configuration auditing\n• Command injection via find -exec\n• Hash cracking methodology\n• Ethical hacking principles\n\n🏆 Use \'submit-flag\' to complete your mission!';
-            },
-            
-            history: () => {
-                return appState.commandHistory.slice(-10).map((cmd, index) => `${index + 1}  ${cmd}`).join('\n');
-            },
-            
-            clear: () => {
-                const output = document.getElementById('terminal-output');
-                output.innerHTML = '';
-                return '';
-            },
-            
-            // CVE Scanner Commands - Updated for sudo misconfigurations
-            'cve-scanner': () => {
-                updateMissionProgress(0, true);
-                appState.cveDiscovered = true;
-                return '🔍 VULNERABILITY SCANNER v4.0 - Sudo Configuration Auditor 🔍\n\nScanning for privilege escalation vectors...\n[████████████████████████████████████████] 100%\n\n🚨 CRITICAL MISCONFIGURATIONS DETECTED:\n\n📋 SUDO-2023-MISC: Dangerous Sudo Configuration\n   Severity: HIGH (CVSS 7.8)\n   Description: User can run \'find\' command as root via sudo\n   Risk: Command injection via -exec parameter\n   Exploitation: Arbitrary command execution with root privileges\n   \n📋 PASS-2022-WEAK: Weak Password Hashing\n   Severity: MEDIUM (CVSS 5.4)\n   Description: SHA-256 used for password storage (fast hashing)\n   Affected: User account \'mary\'\n   Risk: Dictionary attacks may succeed against weak passwords\n\n🎯 EXPLOITATION RECOMMENDATIONS:\n1. Check sudo permissions with \'sudo -l\'\n2. Research find command injection techniques\n3. Escalate to root, then audit user password strength\n\n⚠️  Educational Note: This demonstrates real sudo misconfigurations!\n⚠️  Always obtain authorization before testing on real systems!';
-            },
-            
-            'sudo -l': () => {
-                return 'Matching Defaults entries for student on hacklab-ctf:\n    env_reset, mail_badpass, secure_path=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin\n\nUser student may run the following commands on hacklab-ctf:\n    (root) NOPASSWD: /usr/bin/find\n\n💡 Security Risk: The find command can execute arbitrary commands!\n🚨 Misconfiguration: Allowing find with sudo is dangerous\n🎯 Try: sudo find . -exec /bin/sh \\; -quit';
-            },
-            
-            'find-exploit-info': () => {
-                return '🔍 Find Command Exploitation Information\n\n📖 Sudo Misconfiguration Analysis\n\n⚡ COMMAND INJECTION RISK:\nThe find command\'s -exec parameter can execute arbitrary commands.\nWhen find runs with sudo privileges, executed commands inherit root access.\n\n🎯 EXPLOITATION TECHNIQUE:\nsudo find . -exec /bin/sh \\; -quit\n\n💡 How it works:\n• find searches for files in current directory (.)\n• -exec parameter runs a command for each file found\n• /bin/sh spawns a shell with inherited sudo privileges\n• -quit stops after first execution to prevent multiple shells\n• Result: Root shell access via sudo misconfiguration\n\n⚠️  This is a common real-world misconfiguration\n⚠️  Educational simulation - demonstrates actual attack technique';
-            },
-            
-            // Sudo Misconfiguration Privilege Escalation Command
-            'sudo find . -exec /bin/sh \\; -quit': () => {
-                if (appState.currentUser !== 'student') {
-                    return 'This exploit requires sudo access from student account.';
-                }
-                
-                // Change user state to root using sudo misconfiguration
-                appState.currentUser = 'root';
-                appState.rootAccess = true;
-                updateMissionProgress(1, true);
-                
-                // Update UI elements
-                updatePrompt();
-                updateUserIndicator();
-                
-                return '🚨 SUDO MISCONFIGURATION EXPLOITATION SUCCESSFUL! 🚨\n\n⚡ Executing sudo misconfiguration exploit...\n[████████████████████████████████████████] 100%\n\n✅ EXPLOITATION SUCCESSFUL!\n🔓 Privilege escalation complete via sudo misconfiguration\n🎯 UID changed: 1000(student) → 0(root)\n\n⚠️  WARNING: You now have root access (simulated)\n⚠️  Educational simulation - demonstrates real sudo misconfiguration\n\nRoot shell obtained via find command injection. Type \'whoami\' to confirm.\n\n💡 What happened:\n• sudo allowed student to run find as root (misconfiguration)\n• find -exec parameter executed /bin/sh command\n• Shell inherited root privileges from sudo context\n• This bypassed normal privilege restrictions\n\n🔧 How to prevent:\n• Restrict sudo access to specific, safe commands only\n• Never allow commands with -exec or similar parameters\n• Use sudo rules that prevent command injection\n• Regular security audits of sudo configurations\n\n🎯 Next objective: Crack mary\'s password using root access';
-            },
-            
-            // Root-only commands
-            'hashcracker --target mary': () => {
-                if (appState.currentUser !== 'root') {
-                    return 'Error: hashcracker requires root privileges';
-                }
-                
-                appState.passwordCracked = true;
-                
-                return '🔍 TARGETED HASH CRACKING - Mary\'s Account\n\n🎯 Target: mary\nHash: $5$marysalt123$8yHlRHpl5IDzMbNttD3zfmxoBHSQZ7ENFkBGnzVXyI3\n\n📊 HASH ANALYSIS:\n• Algorithm: SHA-256 (indicated by $5$)\n• Salt: marysalt123\n• Security Assessment: WEAK (fast hashing algorithm)\n\n🔄 DICTIONARY ATTACK INITIATED:\n[████████████████████████████████████████] 100%\n\nTesting common passwords for user \'mary\'...\n❌ password (attempt 1)\n❌ 123456 (attempt 2)\n❌ mary123 (attempt 15)\n❌ sunshine (attempt 47)\n✅ flowers2023 (attempt 73)\n\n🎉 PASSWORD CRACKED!\n👤 User: mary\n🔑 Password: flowers2023\n⏱️  Time: 0.12 seconds (simulated)\n📊 Attempts: 73/14,344,391\n\n💡 Why this worked:\n• SHA-256 is fast (not designed for passwords)\n• \'flowers2023\' appears in common password lists\n• Modern systems use bcrypt/scrypt/Argon2 for better security\n\n🎯 Next: Login as mary using: su mary\n🔑 When prompted, enter password: flowers2023';
-            },
-            
-            // User switching
-            'su mary': () => {
-                if (!appState.passwordCracked) {
-                    return 'su: Authentication failure';
-                }
-                
-                // Prompt for password (simulated)
-                const password = prompt('Password:');
-                if (password === appData.crackedPassword) {
-                    appState.currentUser = 'mary';
-                    updatePrompt();
-                    updateUserIndicator();
-                    return 'Successfully switched to user mary';
-                } else {
-                    return 'su: Authentication failure';
-                }
-            },
-            
-            'submit-flag': () => {
-                if (!appState.flagCaptured) {
-                    return 'Error: You must capture the flag first! Try accessing mary\'s account.';
-                }
-                
-                const flagInput = prompt('Enter the captured flag:');
-                if (flagInput === appData.flag) {
-                    appState.flagSubmitted = true;
-                    return '🎉🎉🎉 MISSION ACCOMPLISHED! 🎉🎉🎉\n\n✅ Sudo misconfiguration discovery: COMPLETE\n✅ Privilege escalation via sudo misconfiguration: COMPLETE\n✅ Lateral movement to mary: COMPLETE\n✅ Flag capture: COMPLETE\n\n🏆 ACHIEVEMENT UNLOCKED: Sudo Configuration Expert 🏆\n🎓 Skills demonstrated:\n   • Real-world vulnerability assessment\n   • Sudo misconfiguration exploitation\n   • Password security analysis\n   • Lateral movement methodology\n\n📜 You\'ve learned practical ethical hacking skills!\n🔧 Remember: Always secure sudo configurations properly!';
-                } else {
-                    return 'Incorrect flag. Try again.';
-                }
-            }
-        };
+function print(text, cls = 'cmd-out') {
+  const div = document.createElement('div');
+  div.className = cls;
+  div.style.whiteSpace = 'pre-wrap';
+  div.textContent = text;
+  out.appendChild(div);
+  out.scrollTop = out.scrollHeight;
+}
 
-        // DOM Elements
-        let terminalOutput, terminalInput, currentUserIndicator;
+function printRaw(html, cls = 'cmd-out') {
+  const div = document.createElement('div');
+  div.className = cls;
+  div.innerHTML = html;
+  out.appendChild(div);
+  out.scrollTop = out.scrollHeight;
+}
 
-        // Initialize Application
-        function initializeApp() {
-            terminalOutput = document.getElementById('terminal-output');
-            terminalInput = document.getElementById('terminal-input');
-            currentUserIndicator = document.getElementById('current-user-indicator');
-            
-            // Set up event listeners
-            setupEventListeners();
-            
-            // Initialize UI
-            updatePrompt();
-            updateUserIndicator();
-            updateMissionProgress();
-        }
+function printPromptEcho(cmd) {
+  print(getPrompt() + cmd, 'cmd-echo');
+}
 
-        // Event Listeners
-        function setupEventListeners() {
-            // Terminal input
-            terminalInput.addEventListener('keydown', handleTerminalInput);
-            
-            // Control buttons
-            document.getElementById('guidePanelBtn').addEventListener('click', toggleGuidePanel);
-            document.getElementById('resetMissionBtn').addEventListener('click', resetMission);
-            
-            // Focus terminal input
-            document.addEventListener('click', () => {
-                terminalInput.focus();
-            });
-            
-            terminalInput.focus();
-        }
+function getPrompt() {
+  const sym = state.user === 'root' ? '#' : '$';
+  return `${state.user}@hacklab-ctf:~${sym} `;
+}
 
-        // Terminal Input Handler
-        function handleTerminalInput(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                const command = terminalInput.value.trim();
-                if (command) {
-                    executeCommand(command);
-                    terminalInput.value = '';
-                }
-            } else if (event.key === 'ArrowUp') {
-                event.preventDefault();
-                navigateHistory(-1);
-            } else if (event.key === 'ArrowDown') {
-                event.preventDefault();
-                navigateHistory(1);
-            }
-        }
+function updatePromptUI() {
+  if (state.awaitingPw) {
+    promptEl.textContent = 'Password: ';
+    promptEl.className = 'pw';
+  } else if (state.awaitingFlag) {
+    promptEl.textContent = 'Flag: ';
+    promptEl.className = 'pw';
+  } else {
+    promptEl.textContent = getPrompt();
+    promptEl.className = state.user;
+  }
+  ui.textContent = state.user;
+  ui.className = state.user;
+}
 
-        // Command Execution
-        function executeCommand(command) {
-            // Add to history
-            appState.commandHistory.push(command);
-            appState.historyIndex = appState.commandHistory.length;
-            
-            // Display command
-            appendToTerminal(`${getPromptText()}${command}`, 'command-input-display');
-            
-            // Execute command
-            let output;
-            if (commands[command]) {
-                output = typeof commands[command] === 'function' ? commands[command]() : commands[command];
-            } else if (command.includes(' ')) {
-                // Handle commands with arguments
-                const parts = command.split(' ');
-                const baseCommand = parts[0];
-                const args = parts.slice(1).join(' ');
-                
-                if (commands[baseCommand]) {
-                    output = typeof commands[baseCommand] === 'function' ? commands[baseCommand](args) : commands[baseCommand];
-                } else {
-                    output = `Command not found: ${command}`;
-                }
-            } else {
-                output = `Command not found: ${command}`;
-            }
-            
-            // Display output
-            if (output) {
-                appendToTerminal(output, 'command-output');
-            }
-            
-            // Scroll to bottom
-            terminalOutput.scrollTop = terminalOutput.scrollHeight;
-        }
+function markObj(n) {
+  document.getElementById('obj' + n).classList.add('done');
+}
 
-        // Utility Functions
-        function appendToTerminal(text, className = '') {
-            const div = document.createElement('div');
-            div.className = `command-line ${className}`;
-            div.textContent = text;
-            terminalOutput.appendChild(div);
-        }
+// ---- Commands ----
 
-        function getPromptText() {
-            const hostname = 'hacklab-ctf';
-            const symbol = appState.currentUser === 'root' ? '#' : '$';
-            return `${appState.currentUser}@${hostname}:~${symbol} `;
-        }
+function printHelp() {
+  const text = `Available commands:
+  RECON
+    cve-scanner            Run vulnerability scanner
+    sudo -l                List sudo privileges for current user
+    find-exploit-info      Explain find command injection
 
-        function updatePrompt() {
-            const prompt = document.querySelector('#terminal-prompt');
-            if (prompt) {
-                prompt.textContent = getPromptText();
-                prompt.className = `prompt ${appState.currentUser}`;
-            }
-        }
+  SYSTEM
+    whoami                 Print current user
+    id                     Print UID/GID info
+    pwd                    Print working directory
+    hostname               Print hostname
+    uname -a               Print system info
+    ls [path]              List directory
+    cat [file]             Read file
+    history                Show last 10 commands
+    clear                  Clear terminal
 
-        function updateUserIndicator() {
-            if (currentUserIndicator) {
-                currentUserIndicator.textContent = appState.currentUser;
-                currentUserIndicator.className = `${appState.currentUser}`;
-            }
-        }
+  EXPLOITATION
+    sudo find . -exec /bin/sh \\; -quit   Exploit sudo misconfiguration
+    hashcracker --target mary             Crack user hash (requires root)
+    su mary                               Switch to mary
 
-        function updateMissionProgress(index = null, completed = null) {
-            if (index !== null && completed !== null) {
-                appState.missionProgress[index] = completed;
-            }
-            
-            // Update UI
-            for (let i = 0; i < 3; i++) {
-                const objective = document.getElementById(`objective-${i + 1}`);
-                if (objective) {
-                    const icon = objective.querySelector('.objective-icon');
-                    if (appState.missionProgress[i]) {
-                        objective.classList.add('completed');
-                        icon.textContent = '✅';
-                    } else {
-                        objective.classList.remove('completed');
-                        icon.textContent = '⭕';
-                    }
-                }
-            }
-        }
+  CTF
+    submit-flag            Submit the captured flag`;
+  if (!state.awaitingPw && !state.awaitingFlag) print(text, 'cmd-info');
+}
 
-        function navigateHistory(direction) {
-            if (appState.commandHistory.length === 0) return;
-            
-            appState.historyIndex += direction;
-            
-            if (appState.historyIndex < 0) {
-                appState.historyIndex = 0;
-            } else if (appState.historyIndex >= appState.commandHistory.length) {
-                appState.historyIndex = appState.commandHistory.length;
-                terminalInput.value = '';
-                return;
-            }
-            
-            terminalInput.value = appState.commandHistory[appState.historyIndex] || '';
-        }
+const COMMANDS = {
+  'help': () => printHelp(),
+  'whoami': () => print(state.user),
+  'pwd': () => print('/home/' + state.user),
+  'hostname': () => print('hacklab-ctf'),
+  'uname -a': () => print('Linux hacklab-ctf 5.15.0-generic #1 SMP x86_64 GNU/Linux'),
+  'id': () => {
+    if (state.user === 'root') print('uid=0(root) gid=0(root) groups=0(root)');
+    else if (state.user === 'mary') print('uid=1001(mary) gid=1001(mary) groups=1001(mary)');
+    else print('uid=1000(student) gid=1000(student) groups=1000(student),27(sudo)');
+  },
+  'ls': () => {
+    if (state.user === 'mary') print('flag.txt\npersonal_data.txt\nDocuments\nDownloads');
+    else print('Documents\nDownloads\nDesktop\nctf-tools');
+  },
+  'ls /home': () => print('student\nmary\nguest'),
+  'ls /etc': () => print('hosts\npasswd\nshadow\nsudoers'),
+  'cat /etc/passwd': () => print('root:x:0:0:root:/root:/bin/bash\nstudent:x:1000:1000::/home/student:/bin/bash\nmary:x:1001:1001::/home/mary:/bin/bash'),
+  'cat /etc/shadow': () => {
+    if (state.user !== 'root') { print('cat: /etc/shadow: Permission denied', 'cmd-err'); return; }
+    print('root:$6$salt$hash...:19446:0:99999:7:::\nstudent:$y$salt$hash...:19446:0:99999:7:::\nmary:$5$marysalt123$8yHlRHpl5IDzMbNttD3zfmxoBHSQZ7ENFkBGnzVXyI3:19446:0:99999:7:::');
+  },
+  'cat flag.txt': () => {
+    if (state.user !== 'mary') {
+      print('cat: flag.txt: No such file or directory', 'cmd-err');
+      if (!state.isRoot) print('Hint: You need to escalate privileges first. Try cve-scanner.', 'cmd-warn');
+      else if (!state.pwCracked) print('Hint: Crack mary\'s password first with hashcracker --target mary', 'cmd-warn');
+      else print('Hint: Switch to mary\'s account with su mary', 'cmd-warn');
+      return;
+    }
+    state.flagRead = true;
+    markObj(3);
+    print(`FLAG CAPTURED:
 
-        // Control Functions
-        function toggleGuidePanel() {
-            appState.guidePanelOpen = !appState.guidePanelOpen;
-            const panel = document.querySelector('.guide-panel');
-            const btn = document.getElementById('guidePanelBtn');
-            
-            if (panel) {
-                panel.classList.toggle('open', appState.guidePanelOpen);
-            }
-            btn.classList.toggle('active', appState.guidePanelOpen);
-        }
+${FLAG}
 
-        function resetMission() {
-            if (confirm('Reset mission progress? This will clear all progress.')) {
-                // Reset state
-                appState.currentUser = 'student';
-                appState.missionProgress = [false, false, false];
-                appState.cveDiscovered = false;
-                appState.rootAccess = false;
-                appState.passwordCracked = false;
-                appState.flagCaptured = false;
-                appState.commandHistory = [];
-                appState.historyIndex = -1;
-                
-                // Clear terminal
-                terminalOutput.innerHTML = '';
-                
-                // Re-initialize
-                updatePrompt();
-                updateUserIndicator();
-                updateMissionProgress();
-                
-                // Add welcome message
-                appendToTerminal('🚩 Mission Reset! Welcome back to the CTF Training Simulation!\n\n🎯 Your mission: Exploit sudo misconfigurations to escalate privileges and capture the flag\n🔍 Start by running \'cve-scanner\' to identify misconfigurations\n\nType \'help\' for available commands.\n', 'welcome-message');
-            }
-        }
+Mission summary:
+  [+] Sudo misconfiguration discovered
+  [+] Privilege escalation via find -exec
+  [+] Password hash cracked (flowers2023)
+  [+] Lateral movement to mary
+  [+] Flag captured
 
-        // Initialize when page loads
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeApp);
-        } else {
-            initializeApp();
-        }
-    </script>
-</body>
-</html>
+Run submit-flag to complete the mission.`, 'cmd-success');
+  },
+  'history': () => {
+    const h = state.history.slice(-10);
+    if (!h.length) { print('No commands in history.', 'cmd-out'); return; }
+    print(h.map((c, i) => `  ${i + 1}  ${c}`).join('\n'));
+  },
+  'clear': () => { out.innerHTML = ''; },
+  'cve-scanner': () => {
+    state.cveScanned = true;
+    markObj(1);
+    print(`VULNERABILITY SCANNER v4.0 — Sudo Configuration Auditor
+
+Scanning for privilege escalation vectors...
+[########################################] 100%
+
+CRITICAL MISCONFIGURATIONS DETECTED:
+
+[SUDO-2023-MISC] Dangerous Sudo Rule
+  Severity : HIGH (CVSS 7.8)
+  Detail   : User 'student' can run /usr/bin/find as root (NOPASSWD)
+  Risk     : Command injection via -exec parameter
+  Impact   : Arbitrary code execution with root privileges
+
+[PASS-2022-WEAK] Weak Password Hashing
+  Severity : MEDIUM (CVSS 5.4)
+  Detail   : SHA-256 used for mary's password (fast hash, not password hash)
+  Risk     : Dictionary attack likely to succeed
+
+Next steps:
+  1. Run sudo -l to confirm the sudo rule
+  2. Run find-exploit-info to understand the exploit
+  3. Execute the sudo misconfiguration exploit`, 'cmd-warn');
+  },
+  'sudo -l': () => {
+    print(`Matching Defaults entries for student on hacklab-ctf:
+    env_reset, mail_badpass
+
+User student may run the following commands on hacklab-ctf:
+    (root) NOPASSWD: /usr/bin/find
+
+RISK: find with -exec can spawn arbitrary processes.
+      When run as root via sudo, those processes have root privileges.
+TIP:  sudo find . -exec /bin/sh \\; -quit`);
+  },
+  'find-exploit-info': () => {
+    print(`FIND COMMAND INJECTION — EDUCATIONAL REFERENCE
+
+  The find command's -exec flag runs a program for every file it finds.
+  When find itself runs as root (via sudo), the child processes inherit root.
+
+  Exploit:
+    sudo find . -exec /bin/sh \\; -quit
+
+  Breakdown:
+    sudo find .          → find runs as root
+    -exec /bin/sh \\;   → spawn a shell for each found file
+    -quit               → stop after the first match (one shell is enough)
+
+  Result: Interactive root shell obtained.
+
+  Defense:
+    • Never grant sudo on find (or any command with -exec support)
+    • Use the sudoers 'Cmnd_Alias' with full argument restrictions
+    • Prefer least-privilege — grant only what is strictly necessary
+    • Audit sudoers regularly`, 'cmd-info');
+  },
+  'sudo find . -exec /bin/sh \\; -quit': () => {
+    if (state.user !== 'student') {
+      print('This exploit runs as student using student\'s sudo rights.', 'cmd-err');
+      return;
+    }
+    if (!state.cveScanned) {
+      print('Hint: Run cve-scanner first to identify the vulnerability before exploiting it.', 'cmd-warn');
+      return;
+    }
+    state.user = 'root';
+    state.isRoot = true;
+    markObj(2);
+    updatePromptUI();
+    print(`Executing: sudo find . -exec /bin/sh \\; -quit
+
+[########################################] 100%
+
+EXPLOITATION SUCCESSFUL
+
+  UID 1000(student) → UID 0(root)
+  Sudo allowed find to run as root.
+  find -exec spawned /bin/sh with inherited root privileges.
+
+  What happened:
+    1. sudo elevated find to run as root
+    2. find -exec ran /bin/sh for the first file it encountered
+    3. /bin/sh inherited root's UID from the sudo context
+    4. -quit stopped find after the first execution
+
+You now have root access. Type whoami to confirm.
+
+Next objective: hashcracker --target mary`, 'cmd-success');
+  },
+  'hashcracker --target mary': () => {
+    if (state.user !== 'root') {
+      print('Error: hashcracker requires root privileges.', 'cmd-err');
+      if (!state.isRoot) print('Hint: Escalate to root first using the sudo find exploit.', 'cmd-warn');
+      return;
+    }
+    state.pwCracked = true;
+    print(`TARGETED HASH CRACKER — mary
+
+  Hash : $5$marysalt123$8yHlRHpl5IDzMbNttD3zfmxoBHSQZ7ENFkBGnzVXyI3
+  Algo : SHA-256 (crypt $5$ — fast, unsuitable for password storage)
+
+  Running dictionary attack...
+  [########################################] 100%
+
+  Tried: password, 123456, mary123, sunshine, ... (73 candidates)
+
+  CRACKED: flowers2023
+
+Why SHA-256 is weak for passwords:
+  bcrypt/Argon2 are deliberately slow — 10,000+ iterations per check.
+  SHA-256 is fast by design — attackers can try billions per second.
+
+Next: su mary  (enter password when prompted)`, 'cmd-success');
+  },
+  'su mary': () => {
+    if (!state.pwCracked) {
+      print('su: Authentication failure', 'cmd-err');
+      if (state.isRoot) print('Hint: First crack mary\'s password with hashcracker --target mary', 'cmd-warn');
+      else print('Hint: You need root access first. Exploit the sudo misconfiguration.', 'cmd-warn');
+      return;
+    }
+    // Enter inline password mode
+    state.awaitingPw = true;
+    updatePromptUI();
+    inp.type = 'password';
+    print('(Password prompt — input hidden)', 'cmd-prompt-out');
+  },
+  'submit-flag': () => {
+    if (!state.flagRead) {
+      print('Error: Capture the flag first.', 'cmd-err');
+      if (state.user !== 'mary') print('Hint: Switch to mary and run cat flag.txt', 'cmd-warn');
+      else print('Hint: Run cat flag.txt', 'cmd-warn');
+      return;
+    }
+    state.awaitingFlag = true;
+    updatePromptUI();
+    print('Enter the flag you captured (from cat flag.txt):', 'cmd-prompt-out');
+  },
+};
+
+function handleCommand(raw) {
+  const cmd = raw.trim();
+  if (!cmd) return;
+
+  // Password mode
+  if (state.awaitingPw) {
+    state.awaitingPw = false;
+    inp.type = 'text';
+    updatePromptUI();
+    if (cmd === MARY_PW) {
+      state.user = 'mary';
+      updatePromptUI();
+      print('su: switched to mary', 'cmd-success');
+      print('Run ls to see mary\'s files, then cat flag.txt', 'cmd-info');
+    } else {
+      print('su: Authentication failure', 'cmd-err');
+    }
+    return;
+  }
+
+  // Flag submission mode
+  if (state.awaitingFlag) {
+    state.awaitingFlag = false;
+    updatePromptUI();
+    if (cmd === FLAG) {
+      print(`MISSION ACCOMPLISHED
+
+  [+] Sudo misconfiguration discovered         COMPLETE
+  [+] Privilege escalation to root             COMPLETE
+  [+] Password hash cracked                    COMPLETE
+  [+] Lateral movement to mary                 COMPLETE
+  [+] Flag captured and verified               COMPLETE
+
+ACHIEVEMENT: Privilege Escalation Specialist
+
+You demonstrated:
+  • CVE scanning and vulnerability identification
+  • Sudo misconfiguration exploitation (CWE-269)
+  • Weak password hash cracking (CWE-916)
+  • Lateral movement via credential reuse
+  • Flag capture in CTF environment`, 'cmd-success');
+    } else {
+      print('Incorrect flag. Run cat flag.txt again to copy it exactly.', 'cmd-err');
+    }
+    return;
+  }
+
+  // Normal command mode
+  state.history.push(cmd);
+  state.histIdx = state.history.length;
+  printPromptEcho(cmd);
+
+  // Try exact match first
+  if (COMMANDS[cmd]) {
+    COMMANDS[cmd]();
+    return;
+  }
+
+  // Try stripping args for ls/cat
+  if (cmd.startsWith('ls ')) {
+    const key = 'ls ' + cmd.slice(3).trim();
+    if (COMMANDS[key]) { COMMANDS[key](); return; }
+    COMMANDS['ls']();
+    return;
+  }
+  if (cmd.startsWith('cat ')) {
+    const key = cmd;
+    if (COMMANDS[key]) { COMMANDS[key](); return; }
+    print(`cat: ${cmd.slice(4)}: No such file or directory`, 'cmd-err');
+    return;
+  }
+
+  // Contextual hints for common mistakes
+  const hints = {
+    'sudo': 'Try: sudo -l (to see your sudo privileges)',
+    'find': 'Try the full command: sudo find . -exec /bin/sh \\; -quit',
+    'hashcracker': 'Full command: hashcracker --target mary',
+    'su': 'Full command: su mary',
+    'cat': 'Specify a file: cat flag.txt',
+    'python': 'This is not a Python environment. Try the listed CTF commands.',
+    'nano': 'Text editor not available in this simulation.',
+    'vim': 'Text editor not available in this simulation.',
+    'ssh': 'SSH not available in this simulation.',
+    'nc': 'Netcat not available in this simulation.',
+  };
+  const base = cmd.split(' ')[0];
+  if (hints[base]) {
+    print(`bash: ${cmd}: command not found`, 'cmd-err');
+    print(`Hint: ${hints[base]}`, 'cmd-warn');
+  } else {
+    print(`bash: ${cmd}: command not found — type 'help' for available commands`, 'cmd-err');
+  }
+}
+
+// ---- Input handling ----
+inp.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const val = inp.value;
+    inp.value = '';
+    handleCommand(val);
+    setTimeout(() => inp.focus(), 10);
+  } else if (e.key === 'ArrowUp' && !state.awaitingPw && !state.awaitingFlag) {
+    e.preventDefault();
+    if (state.histIdx > 0) {
+      state.histIdx--;
+      inp.value = state.history[state.histIdx] || '';
+    }
+  } else if (e.key === 'ArrowDown' && !state.awaitingPw && !state.awaitingFlag) {
+    e.preventDefault();
+    if (state.histIdx < state.history.length - 1) {
+      state.histIdx++;
+      inp.value = state.history[state.histIdx] || '';
+    } else {
+      state.histIdx = state.history.length;
+      inp.value = '';
+    }
+  }
+});
+
+document.addEventListener('click', () => inp.focus());
+
+function resetMission() {
+  if (!confirm('Reset all mission progress?')) return;
+  state.user = 'student';
+  state.history = [];
+  state.histIdx = -1;
+  state.cveScanned = false;
+  state.isRoot = false;
+  state.pwCracked = false;
+  state.flagRead = false;
+  state.awaitingPw = false;
+  state.awaitingFlag = false;
+  inp.type = 'text';
+  out.innerHTML = '';
+  updatePromptUI();
+  document.querySelectorAll('.objective').forEach(o => o.classList.remove('done'));
+  boot();
+}
+
+function boot() {
+  print(`CTF Console — Privilege Escalation Training
+${'='.repeat(50)}
+User     : student
+Host     : hacklab-ctf
+Mission  : Capture the flag via sudo misconfiguration
+
+Objectives:
+  1. Discover sudo misconfiguration (cve-scanner)
+  2. Escalate to root (exploit sudo + find)
+  3. Crack mary's password, get flag
+
+Type 'help' for available commands.
+`, 'cmd-info');
+}
+
+boot();
+inp.focus();
+</script>
