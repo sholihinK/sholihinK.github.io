@@ -3,31 +3,46 @@ layout: default
 title: Challenge 03 — CTF Console
 ---
 <style>
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700&display=swap');
+
 :root {
-  --bg: #0d1117;
-  --bg2: #161b22;
-  --bg3: #1c2128;
-  --border: #30363d;
-  --accent: #39ff14;
-  --accent2: #00d4ff;
-  --text: #e6edf3;
-  --muted: #8b949e;
-  --red: #ff3333;
-  --yellow: #ffbe0b;
-  --orange: #ff6b00;
-  --root-color: #ff4444;
-  --mary-color: #4488ff;
+  --bg:        #0a0e1a;
+  --bg2:       #0f1428;
+  --bg3:       #141830;
+  --cyan:      #00f5ff;
+  --magenta:   #ff006e;
+  --yellow:    #ffbe0b;
+  --green:     #39ff14;
+  --red:       #ff3333;
+  --text:      #e8eaf0;
+  --muted:     #6b7280;
+  --orange:    #ff6b00;
+  --root-color: #ff3333;
+  --mary-color: #ff006e;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Satoshi', sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
   font-size: 14px;
   line-height: 1.5;
+}
+
+/* Grid overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,245,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,245,255,0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Subtle scanlines */
@@ -37,7 +52,7 @@ body::after {
   inset: 0;
   background: repeating-linear-gradient(
     0deg, transparent, transparent 2px,
-    rgba(57,255,20,0.015) 2px, rgba(57,255,20,0.015) 4px
+    rgba(0,245,255,0.012) 2px, rgba(0,245,255,0.012) 4px
   );
   pointer-events: none;
   z-index: 9998;
@@ -65,6 +80,8 @@ body::after {
   max-width: 960px;
   margin: 0 auto;
   padding: 30px 20px 60px;
+  position: relative;
+  z-index: 1;
 }
 
 /* Header */
@@ -75,23 +92,25 @@ body::after {
 .challenge-header .tag {
   display: inline-block;
   background: var(--bg3);
-  border: 1px solid var(--accent);
-  color: var(--accent);
+  border: 1px solid rgba(0,245,255,0.4);
+  color: var(--cyan);
   font-size: 0.7em;
   letter-spacing: 3px;
   padding: 4px 12px;
   border-radius: 2px;
   margin-bottom: 12px;
+  font-family: 'Courier New', monospace;
 }
 .challenge-header h1 {
-  font-size: 1.6em;
+  font-family: 'Clash Display', sans-serif;
+  font-size: 1.7em;
   font-weight: 700;
-  color: var(--accent);
-  text-shadow: 0 0 20px rgba(57,255,20,0.3);
+  color: var(--cyan);
+  text-shadow: 0 0 24px rgba(0,245,255,0.3);
   letter-spacing: 2px;
   margin-bottom: 6px;
 }
-.challenge-header p { color: var(--muted); font-size: 0.82em; }
+.challenge-header p { color: var(--muted); font-size: 0.85em; }
 
 /* Status bar */
 .status-bar {
@@ -101,35 +120,36 @@ body::after {
   flex-wrap: wrap;
   gap: 10px;
   background: var(--bg2);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
+  border: 1px solid rgba(0,245,255,0.2);
+  border-left: 3px solid var(--cyan);
   padding: 12px 18px;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-bottom: 16px;
   font-size: 0.8em;
+  font-family: 'Courier New', monospace;
 }
 .user-label { color: var(--muted); }
 #current-user-indicator {
-  color: var(--accent);
+  color: var(--cyan);
   font-weight: 700;
-  border: 1px solid var(--accent);
+  border: 1px solid rgba(0,245,255,0.4);
   padding: 2px 10px;
   border-radius: 2px;
-  background: rgba(57,255,20,0.06);
+  background: rgba(0,245,255,0.06);
   transition: color 0.3s, border-color 0.3s, background 0.3s;
 }
 #current-user-indicator.root {
   color: var(--root-color);
-  border-color: var(--root-color);
-  background: rgba(255,68,68,0.06);
+  border-color: rgba(255,51,51,0.4);
+  background: rgba(255,51,51,0.06);
 }
 #current-user-indicator.mary {
   color: var(--mary-color);
-  border-color: var(--mary-color);
-  background: rgba(68,136,255,0.06);
+  border-color: rgba(255,0,110,0.4);
+  background: rgba(255,0,110,0.06);
 }
 .ctf-badge {
-  color: var(--accent2);
+  color: var(--cyan);
   font-size: 0.85em;
   letter-spacing: 2px;
   animation: blink 2s step-end infinite;
@@ -153,15 +173,16 @@ body::after {
 /* Mission panel */
 .mission-panel {
   background: var(--bg2);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent2);
-  border-radius: 4px;
+  border: 1px solid rgba(0,245,255,0.2);
+  border-left: 3px solid var(--cyan);
+  border-radius: 8px;
   padding: 18px;
 }
 .mission-panel h3 {
-  font-size: 0.74em;
+  font-family: 'Courier New', monospace;
+  font-size: 0.72em;
   letter-spacing: 2px;
-  color: var(--accent2);
+  color: var(--cyan);
   text-transform: uppercase;
   margin-bottom: 14px;
 }
@@ -170,35 +191,37 @@ body::after {
   align-items: flex-start;
   gap: 10px;
   padding: 8px 10px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 4px;
   margin-bottom: 8px;
   font-size: 0.8em;
   color: var(--muted);
   transition: color 0.2s, border-color 0.2s;
+  font-family: 'Courier New', monospace;
 }
 .objective.done {
-  color: var(--accent);
-  border-color: var(--accent);
+  color: var(--cyan);
+  border-color: rgba(0,245,255,0.3);
 }
 .obj-dot {
   width: 8px; height: 8px;
   border-radius: 50%;
-  background: var(--border);
+  background: rgba(255,255,255,0.1);
   margin-top: 4px;
   flex-shrink: 0;
   transition: background 0.2s, box-shadow 0.2s;
 }
 .objective.done .obj-dot {
-  background: var(--accent);
-  box-shadow: 0 0 6px rgba(57,255,20,0.5);
+  background: var(--cyan);
+  box-shadow: 0 0 6px rgba(0,245,255,0.5);
 }
 
 .guide-section {
   margin-top: 16px;
 }
 .guide-section h4 {
-  font-size: 0.72em;
+  font-family: 'Courier New', monospace;
+  font-size: 0.7em;
   letter-spacing: 2px;
   color: var(--muted);
   text-transform: uppercase;
@@ -208,17 +231,18 @@ body::after {
   font-size: 0.76em;
   color: var(--muted);
   line-height: 1.7;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255,255,255,0.06);
   padding-top: 10px;
   margin-top: 10px;
 }
 .guide-entry strong { color: var(--text); }
 .guide-entry code {
-  color: var(--accent2);
+  color: var(--cyan);
   background: var(--bg3);
   padding: 0 4px;
   border-radius: 2px;
   font-size: 0.95em;
+  font-family: 'Courier New', monospace;
 }
 
 /* Control buttons */
@@ -230,11 +254,12 @@ body::after {
 }
 .ctrl-btn {
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(0,245,255,0.25);
   color: var(--muted);
   padding: 6px 14px;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.74em;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.76em;
+  font-weight: 500;
   letter-spacing: 1px;
   cursor: pointer;
   border-radius: 3px;
@@ -242,24 +267,25 @@ body::after {
   text-transform: uppercase;
 }
 .ctrl-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(57,255,20,0.05);
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(0,245,255,0.06);
 }
 
 /* Terminal */
 .terminal-wrap {
   background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
+  border: 1px solid rgba(0,245,255,0.2);
+  border-radius: 8px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   height: 580px;
+  box-shadow: 0 0 20px rgba(0,245,255,0.05);
 }
 .terminal-titlebar {
   background: var(--bg2);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(0,245,255,0.12);
   padding: 8px 14px;
   display: flex;
   align-items: center;
@@ -271,10 +297,11 @@ body::after {
 }
 .tbar-dot.r { background: #ff5f56; }
 .tbar-dot.y { background: #ffbd2e; }
-.tbar-dot.g { background: var(--accent); }
+.tbar-dot.g { background: var(--cyan); box-shadow: 0 0 6px rgba(0,245,255,0.4); }
 .tbar-title {
   flex: 1;
   text-align: center;
+  font-family: 'Courier New', monospace;
   font-size: 0.72em;
   color: var(--muted);
   letter-spacing: 1px;
@@ -287,21 +314,22 @@ body::after {
   overflow-x: hidden;
   white-space: pre-wrap;
   word-break: break-word;
+  font-family: 'Courier New', monospace;
   font-size: 13px;
   line-height: 1.6;
-  color: var(--accent);
+  color: var(--cyan);
 }
 #terminal-output::-webkit-scrollbar { width: 6px; }
 #terminal-output::-webkit-scrollbar-track { background: var(--bg2); }
-#terminal-output::-webkit-scrollbar-thumb { background: var(--border); }
-#terminal-output::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+#terminal-output::-webkit-scrollbar-thumb { background: rgba(0,245,255,0.3); }
+#terminal-output::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
 
-.cmd-echo { color: var(--accent); }
-.cmd-out { color: #a8d8a8; }
+.cmd-echo { color: var(--cyan); }
+.cmd-out { color: rgba(0,245,255,0.7); }
 .cmd-err { color: var(--red); }
 .cmd-warn { color: var(--yellow); }
-.cmd-success { color: var(--accent); font-weight: 700; }
-.cmd-info { color: var(--accent2); }
+.cmd-success { color: var(--cyan); font-weight: 700; }
+.cmd-info { color: rgba(0,245,255,0.85); }
 .cmd-root { color: var(--root-color); }
 .cmd-mary { color: var(--mary-color); }
 .cmd-prompt-out { color: var(--muted); font-style: italic; }
@@ -310,14 +338,15 @@ body::after {
   display: flex;
   align-items: center;
   padding: 10px 16px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(0,245,255,0.12);
   background: var(--bg2);
 }
 #term-prompt {
   white-space: nowrap;
   margin-right: 6px;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--cyan);
+  font-family: 'Courier New', monospace;
   transition: color 0.2s;
   font-size: 13px;
 }
@@ -330,15 +359,16 @@ body::after {
   background: transparent;
   border: none;
   color: var(--text);
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Courier New', monospace;
   font-size: 13px;
   outline: none;
-  caret-color: var(--accent);
+  caret-color: var(--cyan);
 }
 .cursor {
   display: inline-block;
   width: 8px; height: 14px;
-  background: var(--accent);
+  background: var(--cyan);
+  box-shadow: 0 0 6px rgba(0,245,255,0.5);
   animation: cursor-blink 1s step-end infinite;
   vertical-align: middle;
   margin-left: 1px;
