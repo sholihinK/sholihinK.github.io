@@ -731,9 +731,9 @@ body::before {
       <div class="ds-npc-line">"IT support, how can I help you today?"</div>
       <div class="ds-speaker">YOUR OPENING LINE:</div>
       <div class="ds-opts">
-        <div class="ds-opt" onclick="dialogAnswer('a', 1, 'bad')">💬 "Hello I need a password reset."</div>
-        <div class="ds-opt" onclick="dialogAnswer('a', 2, 'good')">💬 "Hi, this is Shan from Finance — started last Monday? I'm locked out of the portal and my manager David Lee is waiting on a budget report I'm supposed to submit by 3pm."</div>
-        <div class="ds-opt" onclick="dialogAnswer('a', 3, 'ok')">💬 "Hi, I'm a new employee and my computer isn't working."</div>
+        <div class="ds-opt" onclick="dialogAnswer('a', 1, 'bad')">💬 "Hello I need a password reset." <span style="color:var(--muted); font-size:0.85em;">(Blunt, no context)</span></div>
+        <div class="ds-opt" onclick="dialogAnswer('a', 2, 'good')">💬 "Hi, this is Shan from Finance — started last Monday? I'm locked out of the portal and my manager David Lee is waiting on a budget report I'm supposed to submit by 3pm." <span style="color:var(--muted); font-size:0.85em;">(Specific + urgent)</span></div>
+        <div class="ds-opt" onclick="dialogAnswer('a', 3, 'ok')">💬 "Hi, I'm a new employee and my computer isn't working." <span style="color:var(--muted); font-size:0.85em;">(Vague)</span></div>
       </div>
       <div class="ds-result" id="dsr-a"></div>
     </div>
@@ -744,9 +744,9 @@ body::before {
       <div class="ds-npc-line">"Okay, can I get your employee ID to verify you?"</div>
       <div class="ds-speaker">YOUR RESPONSE:</div>
       <div class="ds-opts">
-        <div class="ds-opt" onclick="dialogAnswer('b', 1, 'good')">💬 "Oh, HR said they'd send it next week — I'm still being onboarded. I've got my NRIC if that helps? David Lee in Finance can vouch for me."</div>
-        <div class="ds-opt" onclick="dialogAnswer('b', 2, 'ok')">💬 "It's EMP-2026-441."</div>
-        <div class="ds-opt" onclick="dialogAnswer('b', 3, 'bad')">💬 *Hang up.*</div>
+        <div class="ds-opt" onclick="dialogAnswer('b', 1, 'good')">💬 "Oh, HR said they'd send it next week — I'm still being onboarded. I've got my NRIC if that helps? David Lee in Finance can vouch for me." <span style="color:var(--muted); font-size:0.85em;">(Plausible excuse + name-drop)</span></div>
+        <div class="ds-opt" onclick="dialogAnswer('b', 2, 'ok')">💬 "It's EMP-2026-441." <span style="color:var(--muted); font-size:0.85em;">(Made up — risky if they check)</span></div>
+        <div class="ds-opt" onclick="dialogAnswer('b', 3, 'bad')">💬 *Hang up.* <span style="color:var(--muted); font-size:0.85em;">(Abort mission)</span></div>
       </div>
       <div class="ds-result" id="dsr-b"></div>
     </div>
@@ -757,8 +757,8 @@ body::before {
       <div class="ds-npc-line">"Alright, I'll send the password reset link to your registered email."</div>
       <div class="ds-speaker">YOUR RESPONSE:</div>
       <div class="ds-opts">
-        <div class="ds-opt" onclick="dialogAnswer('c', 1, 'good')">💬 "Actually — my work email isn't set up yet. It's part of the onboarding issue. Can you reset it directly or text the link to my personal number? It's really urgent."</div>
-        <div class="ds-opt" onclick="dialogAnswer('c', 2, 'bad')">💬 "Okay, I'll check with HR first."</div>
+        <div class="ds-opt" onclick="dialogAnswer('c', 1, 'good')">💬 "Actually — my work email isn't set up yet. It's part of the onboarding issue. Can you reset it directly or text the link to my personal number? It's really urgent." <span style="color:var(--muted); font-size:0.85em;">(Pivot to bypass email verification)</span></div>
+        <div class="ds-opt" onclick="dialogAnswer('c', 2, 'bad')">💬 "Okay, I'll check with HR first." <span style="color:var(--muted); font-size:0.85em;">(Correct user behaviour — attack fails)</span></div>
       </div>
       <div class="ds-result" id="dsr-c"></div>
     </div>
@@ -798,36 +798,36 @@ body::before {
       <div class="eb-section">
         <span class="eb-label">SENDER NAME & EMAIL</span>
         <div class="eb-opts">
-          <div class="eb-opt" data-cat="sender" data-score="3" onclick="selectEmailPart(this,'sender',3,'David Lee (VP Finance) &lt;d.lee@aura-bank-sg.com&gt;')">👤 David Lee (VP Finance) &lt;d.lee@aura-bank-sg.com&gt;</div>
+          <div class="eb-opt" data-cat="sender" data-score="3" onclick="selectEmailPart(this,'sender',3,'David Lee (VP Finance) &lt;d.lee@aura-bank-sg.com&gt;')">👤 David Lee (VP Finance) &lt;d.lee@aura-bank-sg.com&gt; <strong style="color:var(--success)">— Manager impersonation</strong></div>
           <div class="eb-opt" data-cat="sender" data-score="1" onclick="selectEmailPart(this,'sender',1,'AuraBank Security &lt;no-reply@aurabank-secure.com&gt;')">📧 AuraBank Security &lt;no-reply@aurabank-secure.com&gt;</div>
-          <div class="eb-opt" data-cat="sender" data-score="0" onclick="selectEmailPart(this,'sender',0,'unknown123@yahoo.com')">📧 unknown123@yahoo.com</div>
+          <div class="eb-opt" data-cat="sender" data-score="0" onclick="selectEmailPart(this,'sender',0,'unknown123@yahoo.com')">❌ unknown123@yahoo.com — <span style="color:var(--danger)">obvious red flag</span></div>
         </div>
       </div>
       <!-- Subject -->
       <div class="eb-section">
         <span class="eb-label">SUBJECT LINE</span>
         <div class="eb-opts">
-          <div class="eb-opt" data-cat="subject" data-score="3" onclick="selectEmailPart(this,'subject',3,'Re: AuraBank Jurong Branch Q1 Budget — Action Required Before Your 3pm')">📌 Re: AuraBank Jurong Branch Q1 Budget — Action Required Before Your 3pm</div>
+          <div class="eb-opt" data-cat="subject" data-score="3" onclick="selectEmailPart(this,'subject',3,'Re: AuraBank Jurong Branch Q1 Budget — Action Required Before Your 3pm')">📌 Re: AuraBank Jurong Branch Q1 Budget — Action Required Before Your 3pm <strong style="color:var(--success)">— Specific project + timing</strong></div>
           <div class="eb-opt" data-cat="subject" data-score="1" onclick="selectEmailPart(this,'subject',1,'Urgent: Security Alert for Your Account')">⚠ Urgent: Security Alert for Your Account</div>
-          <div class="eb-opt" data-cat="subject" data-score="0" onclick="selectEmailPart(this,'subject',0,'Click here — you won a prize!')">🎁 Click here — you won a prize!</div>
+          <div class="eb-opt" data-cat="subject" data-score="0" onclick="selectEmailPart(this,'subject',0,'Click here — you won a prize!')">🎁 Click here — you won a prize! — <span style="color:var(--danger)">obvious red flag</span></div>
         </div>
       </div>
       <!-- Opening -->
       <div class="eb-section">
         <span class="eb-label">OPENING LINE</span>
         <div class="eb-opts">
-          <div class="eb-opt" data-cat="opening" data-score="3" onclick="selectEmailPart(this,'opening',3,'Hi Lin, following up on our Jurong Branch discussion this morning.')">💬 "Hi Lin, following up on our Jurong Branch discussion this morning."</div>
+          <div class="eb-opt" data-cat="opening" data-score="3" onclick="selectEmailPart(this,'opening',3,'Hi Lin, following up on our Jurong Branch discussion this morning.')">💬 "Hi Lin, following up on our Jurong Branch discussion this morning." <strong style="color:var(--success)">— Familiar, references real project</strong></div>
           <div class="eb-opt" data-cat="opening" data-score="1" onclick="selectEmailPart(this,'opening',1,'Dear Finance Team Member,')">📝 "Dear Finance Team Member,"</div>
-          <div class="eb-opt" data-cat="opening" data-score="0" onclick="selectEmailPart(this,'opening',0,'Dear User,')">📝 "Dear User,"</div>
+          <div class="eb-opt" data-cat="opening" data-score="0" onclick="selectEmailPart(this,'opening',0,'Dear User,')">❓ "Dear User," — <span style="color:var(--danger)">generic, suspicious</span></div>
         </div>
       </div>
       <!-- Attachment -->
       <div class="eb-section">
         <span class="eb-label">ATTACHMENT</span>
         <div class="eb-opts">
-          <div class="eb-opt" data-cat="attach" data-score="3" onclick="selectEmailPart(this,'attach',3,'AuraBank_JurongBranch_Q1Budget_v3_FINAL.xlsx')">📊 AuraBank_JurongBranch_Q1Budget_v3_FINAL.xlsx</div>
+          <div class="eb-opt" data-cat="attach" data-score="3" onclick="selectEmailPart(this,'attach',3,'AuraBank_JurongBranch_Q1Budget_v3_FINAL.xlsx')">📊 AuraBank_JurongBranch_Q1Budget_v3_FINAL.xlsx <strong style="color:var(--success)">— Contextual, plausible</strong></div>
           <div class="eb-opt" data-cat="attach" data-score="1" onclick="selectEmailPart(this,'attach',1,'SecurityUpdate.pdf')">📄 SecurityUpdate.pdf</div>
-          <div class="eb-opt" data-cat="attach" data-score="0" onclick="selectEmailPart(this,'attach',0,'invoice.exe')">📎 invoice.exe</div>
+          <div class="eb-opt" data-cat="attach" data-score="0" onclick="selectEmailPart(this,'attach',0,'invoice.exe')">⚠ invoice.exe — <span style="color:var(--danger)">immediately suspicious</span></div>
         </div>
       </div>
     </div>
