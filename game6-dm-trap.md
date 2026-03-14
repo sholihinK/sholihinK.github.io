@@ -222,14 +222,13 @@ title: "DM TRAP"
   padding: 1px 2px;
 }
 .rf-hotspot.unfound {
-  background: rgba(255,200,0,0.2);
-  border-bottom: 2px dashed #ffb700;
+  /* no pre-reveal styling — blends with surrounding text */
 }
 .rf-hotspot.found {
   background: rgba(255,23,68,0.15);
   border-bottom: 2px solid var(--danger);
 }
-.rf-hotspot.unfound:hover { background: rgba(255,200,0,0.35); }
+.rf-hotspot.unfound:hover { background: rgba(255,255,255,0.08); }
 
 /* Red flag reveal panel */
 .rf-panel {
@@ -307,12 +306,11 @@ title: "DM TRAP"
   cursor: pointer;
   padding: 1px 3px;
   border-radius: 3px;
-  background: rgba(255,183,0,0.12);
-  border-bottom: 2px dashed #ffb700;
   transition: background 0.2s;
+  /* no pre-reveal styling */
 }
-.anom-hotspot.found { background: rgba(255,23,68,0.15); border-bottom-color: var(--danger); }
-.anom-hotspot:hover { background: rgba(255,183,0,0.25); }
+.anom-hotspot.found { background: rgba(255,23,68,0.15); border-bottom: 2px solid var(--danger); }
+.anom-hotspot:hover { background: rgba(255,255,255,0.08); }
 .anom-panel {
   display: none;
   background: var(--bg3);
@@ -613,7 +611,7 @@ title: "DM TRAP"
         <div class="sh-icon">📸</div>
         <div class="sh-body">
           <h2>ATTACK 1 — THE FAKE CREATOR</h2>
-          <p>A DM arrives from what looks like a beauty creator you follow. Tap every <span style="color:#ffb700;border-bottom:2px dashed #ffb700">highlighted</span> element to inspect it. Find all 4 red flags.</p>
+          <p>A DM arrives from what looks like a beauty creator you follow. Read it carefully and <strong>tap anything that seems off</strong>. Find all 4 red flags hidden in this message.</p>
         </div>
       </div>
 
@@ -687,7 +685,7 @@ title: "DM TRAP"
         <div class="sh-icon">👤</div>
         <div class="sh-body">
           <h2>ATTACK 2 — THE HACKED FRIEND</h2>
-          <p>A DM from your actual friend Jasmine. Toggle between her past messages and this new one. Spot <strong>4 anomalies</strong> in the suspicious message.</p>
+          <p>A DM arrived from your friend Jasmine. Toggle to "This Message" and <strong>tap anything that feels wrong or out of place</strong>. Find all 4 anomalies.</p>
         </div>
       </div>
 
@@ -752,7 +750,7 @@ title: "DM TRAP"
             </div>
           </div>
         </div>
-        <div style="text-align:center;font-size:0.8rem;color:var(--muted);padding:0 0 8px">↑ Tap the highlighted parts. Spot all 4 anomalies to continue.</div>
+        <div style="text-align:center;font-size:0.8rem;color:var(--muted);padding:0 0 8px">↑ Tap anything that seems off. Spot all 4 anomalies to continue.</div>
 
         <div class="anom-panel" id="anp0">
           <div class="anom-label">🔍 ANOMALY 1: SEND TIME</div>
@@ -851,9 +849,9 @@ title: "DM TRAP"
       <div class="tt-choice-section">
         <p>What do you do with the @tiktok.gifts.sg comment?</p>
         <div class="tt-choices" id="tt-choices">
-          <button class="tt-choice" onclick="ttChoice(this, false, 'bad1')">❌ Tap the link to check — it might be real</button>
-          <button class="tt-choice" onclick="ttChoice(this, false, 'bad2')">❌ DM @tiktok.gifts.sg directly to ask if it\'s legit</button>
-          <button class="tt-choice" onclick="ttChoice(this, true, 'good')">✅ Report the comment, block @tiktok.gifts.sg, and ignore it</button>
+          <button class="tt-choice" onclick="ttChoice(this, false, 'bad1')">Tap the link to check — it might be real</button>
+          <button class="tt-choice" onclick="ttChoice(this, false, 'bad2')">DM @tiktok.gifts.sg directly to ask if it's legit</button>
+          <button class="tt-choice" onclick="ttChoice(this, true, 'good')">Report the comment, block @tiktok.gifts.sg, and ignore it</button>
         </div>
         <div class="tt-consequence" id="ttc-bad1">
           <div class="cons-label">✗ WRONG — HERE'S WHAT HAPPENED</div>

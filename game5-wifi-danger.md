@@ -757,9 +757,9 @@ title: "WIFI DANGER ZONE"
           <div class="dc-num">DECISION 01 / 05</div>
           <div class="dc-situation">You're at a café in Bugis Junction. You want to save data. There's a WiFi network called "Kopi_Place_Free". Before connecting, what's the smartest move?</div>
           <div class="dc-choices">
-            <button class="dc-choice" onclick="answerDecision(0,true,this)">✅ Ask the staff: "What's your exact WiFi name and password?" — then connect to only that one</button>
-            <button class="dc-choice" onclick="answerDecision(0,false,this)">❌ Connect to the strongest open signal — if it's the café's, it's probably fine</button>
-            <button class="dc-choice" onclick="answerDecision(0,false,this)">❌ Check if the name looks professional — "Kopi_Place_Free" sounds legit</button>
+            <button class="dc-choice" onclick="answerDecision(0,true,this)">Ask the staff: "What's your exact WiFi name and password?" — then connect to only that one</button>
+            <button class="dc-choice" onclick="answerDecision(0,false,this)">Connect to the strongest open signal — if it's the café's, it's probably fine</button>
+            <button class="dc-choice" onclick="answerDecision(0,false,this)">Check if the name looks professional — "Kopi_Place_Free" sounds legit</button>
           </div>
           <div class="dc-consequence" id="dcc0">
             <div class="cons-label"></div>
@@ -772,9 +772,9 @@ title: "WIFI DANGER ZONE"
           <div class="dc-num">DECISION 02 / 05</div>
           <div class="dc-situation">You're connected to VivoCity_Guest (legit WPA2). You need to check your POSB bank balance. What do you do?</div>
           <div class="dc-choices">
-            <button class="dc-choice" onclick="answerDecision(1,false,this)">❌ Use the mall WiFi — the POSB app is secure and uses HTTPS anyway</button>
-            <button class="dc-choice" onclick="answerDecision(1,true,this)">✅ Switch off WiFi and use your 4G/5G mobile data instead</button>
-            <button class="dc-choice" onclick="answerDecision(1,false,this)">❌ Open a private (incognito) tab in Chrome — that keeps banking safe</button>
+            <button class="dc-choice" onclick="answerDecision(1,false,this)">Use the mall WiFi — the POSB app is secure and uses HTTPS anyway</button>
+            <button class="dc-choice" onclick="answerDecision(1,true,this)">Switch off WiFi and use your 4G/5G mobile data instead</button>
+            <button class="dc-choice" onclick="answerDecision(1,false,this)">Open a private (incognito) tab in Chrome — that keeps banking safe</button>
           </div>
           <div class="dc-consequence" id="dcc1">
             <div class="cons-label"></div>
@@ -787,9 +787,9 @@ title: "WIFI DANGER ZONE"
           <div class="dc-num">DECISION 03 / 05</div>
           <div class="dc-situation">You previously connected to "Starbucks_WiFi" at Tampines. Your phone now says "Starbucks_WiFi available — connect automatically?" You're not in Starbucks.</div>
           <div class="dc-choices">
-            <button class="dc-choice" onclick="answerDecision(2,false,this)">❌ Accept — it must be a Starbucks nearby that you can't see</button>
-            <button class="dc-choice" onclick="answerDecision(2,true,this)">✅ Tap "Forget This Network" and decline. Investigate first.</button>
-            <button class="dc-choice" onclick="answerDecision(2,false,this)">❌ Connect but don't open any apps — just having WiFi is safe</button>
+            <button class="dc-choice" onclick="answerDecision(2,false,this)">Accept — it must be a Starbucks nearby that you can't see</button>
+            <button class="dc-choice" onclick="answerDecision(2,true,this)">Tap "Forget This Network" and decline. Investigate first.</button>
+            <button class="dc-choice" onclick="answerDecision(2,false,this)">Connect but don't open any apps — just having WiFi is safe</button>
           </div>
           <div class="dc-consequence" id="dcc2">
             <div class="cons-label"></div>
@@ -802,9 +802,9 @@ title: "WIFI DANGER ZONE"
           <div class="dc-num">DECISION 04 / 05</div>
           <div class="dc-situation">You need to use public WiFi regularly for school research. You want extra protection. Which tool actually helps?</div>
           <div class="dc-choices">
-            <button class="dc-choice" onclick="answerDecision(3,false,this)">❌ Incognito / Private browsing mode — it hides your activity</button>
-            <button class="dc-choice" onclick="answerDecision(3,false,this)">❌ A strong device password — that stops attackers on the network</button>
-            <button class="dc-choice" onclick="answerDecision(3,true,this)">✅ A VPN (Virtual Private Network) — encrypts all traffic before it leaves your device</button>
+            <button class="dc-choice" onclick="answerDecision(3,false,this)">Incognito / Private browsing mode — it hides your activity</button>
+            <button class="dc-choice" onclick="answerDecision(3,false,this)">A strong device password — that stops attackers on the network</button>
+            <button class="dc-choice" onclick="answerDecision(3,true,this)">A VPN (Virtual Private Network) — encrypts all traffic before it leaves your device</button>
           </div>
           <div class="dc-consequence" id="dcc3">
             <div class="cons-label"></div>
@@ -817,9 +817,9 @@ title: "WIFI DANGER ZONE"
           <div class="dc-num">DECISION 05 / 05</div>
           <div class="dc-situation">You're on public WiFi and need to log into your school portal. The URL bar shows: <code style="color:var(--pink);font-size:0.85em">http://crestportal.edu.sg/login</code> — no padlock. What do you do?</div>
           <div class="dc-choices">
-            <button class="dc-choice" onclick="answerDecision(4,false,this)">❌ Log in quickly and log out immediately — faster = safer</button>
-            <button class="dc-choice" onclick="answerDecision(4,false,this)">❌ Log in — it's the school portal, it must be safe</button>
-            <button class="dc-choice" onclick="answerDecision(4,true,this)">✅ Close the page. Use mobile data and try again — or report the HTTP issue to the school IT team.</button>
+            <button class="dc-choice" onclick="answerDecision(4,false,this)">Log in quickly and log out immediately — faster = safer</button>
+            <button class="dc-choice" onclick="answerDecision(4,false,this)">Log in — it's the school portal, it must be safe</button>
+            <button class="dc-choice" onclick="answerDecision(4,true,this)">Close the page. Use mobile data and try again — or report the HTTP issue to the school IT team.</button>
           </div>
           <div class="dc-consequence" id="dcc4">
             <div class="cons-label"></div>
@@ -887,12 +887,7 @@ function goStage(n) {
 let activeVerdictIdx = null;
 
 function inspectWifi(idx) {
-  if (activeVerdictIdx !== null && activeVerdictIdx !== idx) {
-    document.getElementById('wv' + activeVerdictIdx).classList.remove('show');
-  }
-  const vd = document.getElementById('wv' + idx);
-  vd.classList.toggle('show');
-  activeVerdictIdx = vd.classList.contains('show') ? idx : null;
+  // Verdict only shown after flagging — do nothing on bare row tap
 }
 
 function flagWifi(idx, isSuspicious) {
