@@ -3,6 +3,8 @@ layout: default
 title: "What happens after the model complies"
 date: 2026-06-05
 description: "How injected LLM output becomes code execution, data theft, and system compromise."
+excerpt: "What attackers do after the model complies — XSS, SSTI, SSRF, command injection, and agent escalation."
+read_time: "6 min"
 ---
 
 # What happens after the model complies
