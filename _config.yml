@@ -10,6 +10,7 @@ baseurl: ""
 # Build settings
 markdown: kramdown
 theme: minima # We'll override this with our own styling, but minima is a good default.
+permalink: /:year/:month/:day/:title/
 plugins:
   - jekyll-feed
   - jekyll-seo-tag # Good for SEO
