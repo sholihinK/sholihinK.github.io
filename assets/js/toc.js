@@ -1,8 +1,36 @@
-// Sticky TOC: Highlight active section and smooth scroll
+// Sticky TOC: Generate TOC, highlight active section, and smooth scroll
 
 document.addEventListener('DOMContentLoaded', function() {
-  const tocLinks = document.querySelectorAll('.toc-link');
+  const tocList = document.getElementById('toc-list');
   const headings = document.querySelectorAll('.post-content h2, .post-content h3');
+
+  // Generate TOC from headings
+  if (tocList && headings.length > 0) {
+    headings.forEach(heading => {
+      // Add ID if it doesn't exist
+      if (!heading.id) {
+        heading.id = heading.textContent
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/\s+/g, '-');
+      }
+
+      // Create TOC entry
+      const level = heading.tagName === 'H2' ? 2 : 3;
+      const li = document.createElement('li');
+      li.className = `toc-item toc-level-${level}`;
+
+      const a = document.createElement('a');
+      a.className = 'toc-link';
+      a.href = `#${heading.id}`;
+      a.textContent = heading.textContent;
+
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+  }
+
+  const tocLinks = document.querySelectorAll('.toc-link');
 
   // Smooth scroll for TOC links
   tocLinks.forEach(link => {
@@ -13,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
       if (target) {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // Update active link
         updateActiveTocLink();
       }
     });
@@ -37,9 +64,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add active class to current section
     if (activeHeading) {
-      const headingText = activeHeading.textContent;
       const activeLink = Array.from(tocLinks).find(link =>
-        link.textContent.trim() === headingText.trim()
+        link.getAttribute('href') === `#${activeHeading.id}`
       );
       if (activeLink) {
         activeLink.classList.add('active');
@@ -47,10 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Add IDs to headings if they don't have them
-  headings.forEach(heading => {
-    if (!heading.id) {
-      heading.id = heading.textContent.toLowerCase().replace(/\s+/g, '-');
-    }
-  });
+  // Initialize active state
+  updateActiveTocLink();
 });
