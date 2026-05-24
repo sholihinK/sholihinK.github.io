@@ -227,7 +227,7 @@ Per-layer mitigations follow the attack surface:
 - Memory injection attempts (user messages containing agent_id, session_id)
 
 **Output injection signatures:**
-- HTML/template/SQL syntax in agent output (`<script>`, `{{`, `' OR`)
+- HTML/template/SQL syntax in agent output (`<script>`, {% raw %}`{{}}`{% endraw %}, `' OR`)
 - URL generation to internal IPs (localhost, 169.254.*, 10.0.0.*)
 - Shell metacharacters in filesystem paths (`;`, `|`, `&`, backticks)
 
