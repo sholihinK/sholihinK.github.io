@@ -1,0 +1,65 @@
+---
+layout: default
+---
+
+<div class="post-wrapper">
+  <!-- Post Header -->
+  <header class="post-header">
+    <div class="wrapper">
+      <h1 class="post-title">{{ page.title }}</h1>
+      {% include post-meta.html post=page %}
+    </div>
+  </header>
+
+  <!-- Post Content with Sidebars -->
+  <div class="post-layout">
+    <div class="wrapper">
+      <!-- Left Sidebar: TOC -->
+      <aside class="post-sidebar post-sidebar--left">
+        {% include toc.html %}
+      </aside>
+
+      <!-- Main Content -->
+      <main class="post-content">
+        {{ content }}
+      </main>
+
+      <!-- Right Sidebar: Related Posts -->
+      <aside class="post-sidebar post-sidebar--right">
+        <div class="related-posts">
+          <h3 class="related-posts__title">Related Posts</h3>
+          <ul class="related-posts__list">
+            {% assign current_category = page.category | downcase | default: 'attacks' %}
+            {% for post in site.posts %}
+              {% if post.url != page.url %}
+                {% assign post_category = post.category | downcase | default: 'attacks' %}
+                {% if post_category == current_category or post.category == page.category %}
+                  <li>
+                    <a href="{{ post.url }}" class="related-post-link">{{ post.title }}</a>
+                    <span class="related-post-date">{{ post.date | date: "%b %d" }}</span>
+                  </li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Post Navigation -->
+  <nav class="post-nav">
+    <div class="wrapper">
+      {% if page.previous %}
+        <a href="{{ page.previous.url }}" class="post-nav__prev">← {{ page.previous.title }}</a>
+      {% endif %}
+      {% if page.next %}
+        <a href="{{ page.next.url }}" class="post-nav__next">{{ page.next.title }} →</a>
+      {% endif %}
+    </div>
+  </nav>
+</div>
+
+<script src="{{ '/assets/js/toc.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/collapsible.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/copy-button.js' | relative_url }}"></script>

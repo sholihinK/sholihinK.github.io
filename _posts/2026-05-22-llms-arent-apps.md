@@ -1,10 +1,11 @@
 ---
-layout: default
+layout: post
 title: "LLMs aren't apps. Here's what that means for security."
 date: 2026-05-22
 description: "Why the security assumptions you rely on for traditional apps break down completely with language models."
 excerpt: "Why the security model you use for traditional apps doesn't transfer to LLMs — and what that means for attackers."
 read_time: "6 min"
+category: "Foundations"
 ---
 
 # LLMs aren't apps. Here's what that means for security.

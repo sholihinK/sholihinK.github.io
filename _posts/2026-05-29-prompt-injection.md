@@ -1,10 +1,11 @@
 ---
-layout: default
+layout: post
 title: "Prompt injection: when user input becomes a command"
 date: 2026-05-29
 description: "How attackers exploit the LLM trust boundary to override instructions and extract secrets."
 excerpt: "Direct and indirect prompt injection: how attackers exploit the LLM trust boundary and bypass filters."
 read_time: "7 min"
+category: "Attacks"
 ---
 
 # Prompt injection: when user input becomes a command

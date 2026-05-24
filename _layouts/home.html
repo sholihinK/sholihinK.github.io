@@ -1,0 +1,44 @@
+---
+layout: default
+---
+
+<div class="homepage">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="wrapper">
+      <h1 class="hero__title">{{ site.title }}</h1>
+      <p class="hero__tagline">{{ site.tagline }}</p>
+      <p class="hero__bio">A collection of cybersecurity research, notes, and practical insights on offensive security, LLM hacking, and system exploitation.</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="wrapper">
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <input type="text" id="post-search" class="filter-search" placeholder="Search posts...">
+      <div class="filter-categories">
+        <button class="filter-btn filter-btn--active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="foundations">Foundations</button>
+        <button class="filter-btn" data-filter="attacks">Attacks</button>
+        <button class="filter-btn" data-filter="defenses">Defenses</button>
+      </div>
+    </div>
+
+    <!-- Post Grid -->
+    <div class="post-grid" id="post-grid">
+      {% for post in site.posts %}
+        <div class="post-grid-item" data-category="{{ post.category | downcase | default: 'attacks' }}" data-title="{{ post.title | downcase }}">
+          {% include post-card.html post=post %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Archive Link -->
+    <div class="archive-link">
+      <a href="#post-grid">← Back to top</a>
+    </div>
+  </div>
+</div>
+
+<script src="{{ '/assets/js/search.js' | relative_url }}"></script>

@@ -1,0 +1,273 @@
+/* Interactive Features: Copy Buttons, Animations, Transitions */
+
+/* Copy Button */
+.code-copy-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 245, 255, 0.1);
+  border: 1px solid rgba(0, 245, 255, 0.3);
+  color: var(--cyan);
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.75em;
+  font-family: var(--font-body);
+  transition: all 0.2s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.post-content pre:hover .code-copy-button {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.code-copy-button:hover {
+  background: rgba(0, 245, 255, 0.2);
+  border-color: var(--cyan);
+}
+
+.code-copy-button:active {
+  transform: scale(0.95);
+}
+
+.code-copy-button.copied {
+  background: rgba(57, 255, 20, 0.1);
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.code-copy-button.copied::after {
+  content: 'Copied!';
+}
+
+/* Post Card Hover Effect */
+.post-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 245, 255, 0.4);
+}
+
+.post-card__title {
+  transition: color 0.2s ease;
+}
+
+.post-card:hover .post-card__title {
+  color: var(--cyan);
+}
+
+.post-card__read {
+  transition: color 0.2s ease;
+}
+
+.post-card:hover .post-card__read {
+  color: var(--magenta);
+}
+
+/* TOC Link Active State */
+.toc-link.active {
+  color: var(--cyan);
+  font-weight: 600;
+  position: relative;
+  padding-left: 8px;
+}
+
+.toc-link.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 14px;
+  background: var(--cyan);
+  border-radius: 1px;
+}
+
+/* Smooth Scroll Behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Collapsible Section Animation */
+.collapsible-header {
+  position: relative;
+}
+
+.collapsible-header::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 1.2em;
+  background: rgba(0, 245, 255, 0.2);
+  transition: background 0.2s ease;
+}
+
+.collapsible-header:hover::before {
+  background: rgba(0, 245, 255, 0.5);
+}
+
+/* Smooth Transitions */
+a {
+  transition: color 0.2s ease;
+}
+
+button {
+  transition: all 0.2s ease;
+}
+
+input,
+textarea,
+select {
+  transition: all 0.2s ease;
+}
+
+/* Focus Styles for Accessibility */
+input:focus,
+button:focus,
+a:focus {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+/* Selection Color */
+::selection {
+  background: rgba(0, 245, 255, 0.2);
+  color: var(--text);
+}
+
+::-moz-selection {
+  background: rgba(0, 245, 255, 0.2);
+  color: var(--text);
+}
+
+/* Link Underline on Hover */
+.post-content a {
+  position: relative;
+}
+
+.post-content a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--cyan);
+  transition: width 0.2s ease;
+}
+
+.post-content a:hover::after {
+  width: 100%;
+}
+
+/* Fade In Animation for Page Load */
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.post-header,
+.post-content,
+.post-nav {
+  animation: fadeInContent 0.4s ease-out;
+}
+
+/* Hover Effects for Interactive Elements */
+.filter-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.filter-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(0, 245, 255, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+  z-index: -1;
+}
+
+.filter-btn:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Code Block Language Badge */
+.code-language-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  background: rgba(0, 245, 255, 0.1);
+  color: var(--muted);
+  border-radius: 2px;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  opacity: 0.5;
+}
+
+/* Subtle Shadow on Cards */
+.post-card,
+.related-posts {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.2s ease;
+}
+
+.post-card:hover,
+.related-posts:hover {
+  box-shadow: 0 4px 12px rgba(0, 245, 255, 0.1);
+}
+
+/* Loading Animation for Search */
+.post-grid-item.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Empty State Message */
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: var(--muted);
+}
+
+.empty-state__title {
+  font-family: var(--font-display);
+  font-size: 1.5em;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+/* Responsive Hover Effects */
+@media (hover: none) {
+  .post-card:hover {
+    transform: none;
+  }
+
+  .code-copy-button {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

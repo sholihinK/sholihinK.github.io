@@ -1,0 +1,11 @@
+<article class="post-card">
+  <div class="post-card__date">{{ include.post.date | date: "%b %d, %Y" }}</div>
+  <h3 class="post-card__title">{{ include.post.title }}</h3>
+  {% if include.post.read_time %}
+    <div class="post-card__meta">{{ include.post.read_time }}</div>
+  {% endif %}
+  {% if include.post.excerpt %}
+    <p class="post-card__excerpt">{{ include.post.excerpt }}</p>
+  {% endif %}
+  <a href="{{ include.post.url }}" class="post-card__read">Read more →</a>
+</article>

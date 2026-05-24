@@ -29,4 +29,12 @@ exclude:
 linkedin_username: sholihin-kamarudin
 github_username: sholihinK
 
+# Defaults for blog posts
+defaults:
+  - scope:
+      path: "_posts"
+      type: "posts"
+    values:
+      layout: "post"
+
 # Rebuild
