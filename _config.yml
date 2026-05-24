@@ -37,4 +37,5 @@ defaults:
     values:
       layout: "post"
 
-# Rebuild
+# Future posts (include posts dated in the future)
+future: true

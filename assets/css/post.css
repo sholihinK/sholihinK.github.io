@@ -45,10 +45,14 @@
 
 /* Post Layout (3-column: TOC | Content | Related) */
 .post-layout {
-  display: grid;
-  grid-template-columns: 250px 1fr 250px;
-  gap: 40px;
   margin-bottom: 60px;
+}
+
+.post-layout .wrapper {
+  display: grid;
+  grid-template-columns: 220px 1fr 220px;
+  gap: 40px;
+  align-items: start;
 }
 
 /* Left Sidebar: TOC */
@@ -408,7 +412,7 @@
 
 /* Responsive: Tablet */
 @media (max-width: 1024px) {
-  .post-layout {
+  .post-layout .wrapper {
     grid-template-columns: 1fr 200px;
     gap: 24px;
   }
@@ -424,7 +428,7 @@
 
 /* Responsive: Mobile */
 @media (max-width: 768px) {
-  .post-layout {
+  .post-layout .wrapper {
     grid-template-columns: 1fr;
     gap: 16px;
   }
