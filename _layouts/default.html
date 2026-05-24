@@ -29,9 +29,13 @@
     </header>
 
     <main class="page-content">
-        <div class="wrapper">
+        {% if page.layout == 'post' %}
             {{ content }}
-        </div>
+        {% else %}
+            <div class="wrapper">
+                {{ content }}
+            </div>
+        {% endif %}
     </main>
 
     <footer class="site-footer">
